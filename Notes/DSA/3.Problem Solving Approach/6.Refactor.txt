@@ -1,0 +1,23 @@
+Congrats on solving the problem...:)
+
+But we might want to 'LOOK BACK AND REFACTOR' the code.
+
+Questions to ask while refactoring:
+
+- Can you check the results?
+  to know if the code works.
+
+- Can you derive the results differently?
+
+- Can i understand the code at a glance?
+
+- Can i use the result or method for some other problem?
+  Sometime, while solving the problem, we realize that the same method could be used 
+  to solve some other problem that we solved earlier.
+
+- Can i improve the performance of the solution? 
+  This is the top priority of every programmer to make the code more efficient.
+
+- Can i think of other ways to refactor the code?
+
+- How have other people solved the problem?

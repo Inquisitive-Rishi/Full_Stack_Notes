@@ -1,0 +1,258 @@
+Two ways to create an array:
+
+const arr = [];
+const arr = new Array();
+
+const points = new Array(40, 100, 1, 5, 25, 10);
+const points = [40, 100, 1, 5, 25, 10];
+These two different statements both create a new array containing 6 numbers:
+
+for simplicity and readibility, use first option. (i.e the literal method)
+
+Convert arrays to strings:
+
+const arr = ["Banana", "Apple", "Mango", "Orange"];
+console.log(arr.toString()); // Banana,Apple,Mango,Orange
+
+Arrays are special type of object:
+
+console.log(typeof arr) // object
+
+
+Difference b/w Arrays and Objects in JS:
+
+we use 'numbers' to access array elements --> arr[1] // Apple
+i.e arrays are number indexed.
+
+const persons = {firstName:"Rishi", lastName:"Raj", age:26};
+
+we use 'names' to access object elements. --> arr.
+console.log(persons.age) // 26
+i.e arrays are name indexed.
+
+Difference in creating array using 'literally' and with 'new constructor'
+
+const points = [40];
+console.log(points) // 40;
+
+const points = new Array(40);
+console.log(points) // creates 40 undefined elements.
+
+
+Array elements can be objects:
+
+- JS Variables can be objects.
+- Arrays are special kind of object.
+- because of this, there can be variables of different 
+  types in the same array.
+- Therefore:
+  - we can have objects in an array.
+  - we can have functions in an array.
+  - we can have arrays in an array.
+
+How to tell if a variable is an Array or Object?
+
+console.log(typeof arr) // object
+so, the solution is using Array.isArray() method.
+returns boolean.
+
+Array.isArray(arr) // true;
+
+now, to tell if a variable is an object:
+
+<variable-name> instanceof Array;
+
+arr instanceof Array; // true
+
+
+ARRAY METHODS:
+
+Array length
+Array toString()
+Array pop()
+Array push()
+Array shift()
+Array unshift()
+Array join()
+Array delete()
+Array concat()
+Array flat()
+Array splice()
+Array slice()
+
+arr.toString() converts an array to a string of comma separated values.
+
+const arr = ["banana","carrot","papaya"];
+console.log(arr.toString()) // banana,carrot,papaya
+
+difference b/w .toString() and .join():
+
+both joins all elements into a string.
+but, using join() we can specify the separator
+
+const arr = ["banana","carrot","papaya"];
+console.log(arr.join("*")); // banana*carrot*papaya
+console.log(arr.toString()) // banana,carrot,papaya
+
+push() & pop():
+
+arr.push("newitem") - adds newitem to array (at the end);
+
+arr.pop() - removes last element from array and returns the 
+            popped item;
+
+eg: 
+const arr = ["banana","carrot","papaya"];
+const popped = arr.pop();
+console.log(popped) // papaya
+
+
+shift() & unshift():
+
+shift() removes the first element from array,
+and brings all other element to lower index.
+just like pop(), shift() also returns the 'removed element'.
+
+unshift() adds the element at 0th index of the array.
+this brings all other element to a higher index.
+
+
+.length() can also be used to add element to the last of the array.
+
+delete property:
+
+note- delete removes element from array but leaves 'undefined holes'
+      so, use shift() and pop() instead.
+
+const fruits = ["Banana", "Orange", "Apple", "Mango"];
+delete fruits[0];
+console.log(fruits); // [undefined, "Orange", "Apple", "Mango"]
+
+MERGING / CONCATENATING ARRAYS:
+
+const myGirls = ["Cecilie", "Lone"];
+const myBoys = ["Emil", "Tobias", "Linus"];
+
+const myChildren = myGirls.concat(myBoys);
+console.log(myChildren); // Cecilie,Lone,Emil,Tobias,Linus
+
+merging more than 2 arrays:
+
+const arr1 = ["Cecilie", "Lone"];
+const arr2 = ["Emil", "Tobias", "Linus"];
+const arr3 = ["Robin", "Morgan"];
+const myChildren = arr1.concat(arr2, arr3)
+
+console.log(myChildren); // Cecilie,Lone,Emil,Tobias,Linus,Robin,Morgan
+
+.concat() method can take any number of arguments.
+this method does not change the existing arrays, it always returns 
+a new array.
+
+Merging values with array:
+const arr1 = ["Emil", "Tobias", "Linus"];
+const myChildren = arr1.concat("Peter"); 
+console.log(myChildren); // Emil,Tobias,Linus,Peter
+
+FLATTENING AN ARRAY:
+
+flattening an array means reducing the dimensionality of array.
+
+const myArr = [[1,2],[3,4],[5,6]];
+const newArr = myArr.flat();
+console.log(newArr); // 1,2,3,4,5,6
+
+
+SPLICE & SLICE:
+
+.splice(2,0,'first','second') :
+
+2 - index from where to insert elements.
+0 - how many elements to remove while inserting.
+
+const fruits = ["Banana", "Orange", "Apple", "Mango"];
+fruits.splice(2, 0, "Lemon", "Kiwi");
+console.log(fruits); // [Banana,Orange,Lemon,Kiwi,Apple,Mango];
+
+
+const fruits = ["Banana", "Orange", "Apple", "Mango"];
+fruits.splice(2, 2, "Lemon", "Kiwi");
+console.log(fruits); // [Banana,Orange,Lemon,Kiwi]
+
+Remove array elements using splice();
+
+const fruits = ["Banana", "Orange", "Apple", "Mango"];
+fruits.splice(0, 1);
+console.log(fruits); // Orange,Apple,Mango
+
+
+.slice():
+const fruits = ["Banana", "Orange", "Lemon", "Apple", "Mango"];
+const citrus = fruits.slice(1, 3);
+console.log(citrus); // Orange, Lemon.
+
+if second argument is not provided, it slices out the rest of elements.
+
+const fruits = ["Banana", "Orange", "Lemon", "Apple", "Mango"];
+const citrus = fruits.slice(2);
+console.log(citrus); // Lemon,Apple,Mango
+
+arr.toString(): converts array into comma separated values.
+
+const fruits = ["Banana", "Orange", "Lemon", "Apple", "Mango"];
+console.log(fruits.toString()) // Banana,Orange,Lemon,Apple,Mango
+
+
+Note: All JS Objects have .toString() method.
+
+
+All JS Array methods:
+
+at()	 an indexed element of an array
+concat()	Joins arrays and returns an arraReturnsy with the joined arrays
+constructor	Returns the function that created the Array object's prototype
+copyWithin()	Copies array elements within the array, to and from specified positions
+entries()	Returns a key/value pair Array Iteration Object
+every()	Checks if every element in an array pass a test
+fill()	Fill the elements in an array with a static value
+filter()	Creates a new array with every element in an array that pass a test
+find()	Returns the value of the first element in an array that pass a test
+findIndex()	Returns the index of the first element in an array that pass a test
+flat()	Concatenates sub-array elements
+flatMap()	Maps all array elements and creates a new flat array
+forEach()	Calls a function for each array element
+from()	Creates an array from an object
+includes()	Check if an array contains the specified element
+indexOf()	Search the array for an element and returns its position
+isArray()	Checks whether an object is an array
+join()	Joins all elements of an array into a string
+keys()	Returns a Array Iteration Object, containing the keys of the original array
+lastIndexOf()	Search the array for an element, starting at the end, and returns its position
+length	Sets or returns the number of elements in an array
+map()	Creates a new array with the result of calling a function for each array element
+pop()	Removes the last element of an array, and returns that element
+prototype	Allows you to add properties and methods to an Array object
+push()	Adds new elements to the end of an array, and returns the new length
+reduce()	Reduce the values of an array to a single value (going left-to-right)
+reduceRight()	Reduce the values of an array to a single value (going right-to-left)
+reverse()	Reverses the order of the elements in an array
+shift()	Removes the first element of an array, and returns that element
+slice()	Selects a part of an array, and returns the new array
+some()	Checks if any of the elements in an array pass a test
+sort()	Sorts the elements of an array
+splice()	Adds/Removes elements from an array
+toString()	Converts an array to a string, and returns the result
+unshift()	Adds new elements to the beginning of an array, and returns the new length
+valueOf()	Returns the primitive value of an array
+
+
+some important array methods:
+
+filter()
+map()
+find()
+forEach()
+some() 
+every()
+reduce()
+includes()

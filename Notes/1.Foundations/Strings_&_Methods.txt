@@ -1,0 +1,340 @@
+String methods:
+
+String length
+String slice()
+String substring()
+String substr()
+String replace()
+String replaceAll()
+String toUpperCase()
+String toLowerCase()
+String concat()
+String trim()
+String trimStart()
+String trimEnd()
+String padStart()
+String padEnd()
+String charAt()
+String charCodeAt()
+String split()
+
+String Search Methods:
+
+String indexOf()
+String lastIndexOf()
+String search()
+String match()
+String matchAll()
+String includes()
+String startsWith()
+String endsWith()
+
+TEMPLATE LITERAL:
+
+const str = `One day you're my friend,
+another day you're my enemy.`;
+console.log(str)
+
+// One day you're my friend,
+   another day you're my enemy.
+
+but in normal string i.e "" or '' we've to use line break (\n)
+
+ESCAPING CHARACTER:
+Escaping characters means that we do something to them
+to make sure they are recognized as text, not part of the code. 
+
+eg:     
+const bigmouth = 'I\'ve got no right to take my place…';
+console.log(bigmouth);
+// I've got no right to take my place…
+
+let txt1 = "Please visit USA";
+let txt2 = txt1.replace("USA", "India");
+
+console.log(txt2); // Please visit India
+
+let txt3 = "Please visit Microsoft and Microsoft";
+let txt4 = txt3.replace(/Microsoft/g, "Tesla");
+
+console.log(txt4); // Please visit Tesla and Tesla.
+
+let txt5 = "I do exercise everyday";
+let txt6 = txt5.replace(/ExerCISe/i, "yoga");
+
+console.log(txt6); // I do yoga everyday
+
+// Regex are written without quotes.
+
+let t1 = "Cats are cool, I love cats.";
+let r1 = t1.replaceAll(/cats/g, "dogs");
+console.log(r1); Cats are cool, I love dogs.
+
+UPPERCASE & LOWERCASE 
+
+let t2 = "Hello World!";
+let t3 = t2.toUpperCase();
+let t4 = "COMO ESTAS";
+let t5 = t4.toLowerCase();
+console.log(t3);
+console.log(t5);
+
+CONCAT:
+
+let x1 = "Hello";
+let x2 = "World";
+let x3 = "!";
+
+console.log(x1.concat(" ",x2,x3)); // Hello World!
+
+console.log("Hello".concat(" ","World","!")); // Hello World!
+
+Strings are immutable, they cannot be changed, only replaced.
+
+let x = "Hello";
+let splitted = x.split(",");
+console.log(splitted); // [Hello]
+
+Trim
+x.trimStart() | x.trimEnd() // removes white spaces.
+
+let text1 = "     Hello World!     ";
+let text2 = text1.trimEnd(); 
+
+PADDING: padding is a string method, first we convert number to string
+
+x.padStart() | x.padEnd()   
+
+let text = 4;
+let str = text.toString();
+let padded = str.padStart(4,"0");
+console.log(padded);
+
+let text = "5";
+let padded = text.padStart(4,"0");
+console.log(padded) // 0005;
+
+String Characters
+
+x.charAt(index) | x.charCodeAt(index) | property access ([])
+
+let x = "Hello";
+console.log(x[4]); // o
+
+property access makes strings look like array (but they are not).
+if no character is found, p.a returns undefined whereas charAt(index) returns empty string
+
+PA is read only, assignment will not work
+    let x = "Nicholas";
+    x[0] = "S";
+    console.log(x); // Nicholas
+
+Split Method: converts string into an array
+    
+let x = "Burbon";
+let y = x.split(",")
+console.log(y); // [Burbon] 
+
+
+STRING SEARCH METHODS:
+
+String.indexOf()
+
+let x = "Please locate, where 'locate' occurs.";
+console.log("Index of locate is: "+x.indexOf("locate")); // 7   
+
+
+// lastIndexOf() searches from end to beginning
+console.log("Index of locate is also: "+x.lastIndexOf("locate")); // 22
+console.log("Index of locate is also: "+x.indexOf("locate",12)); // 22
+start searching from 12th index.
+
+console.log("Index of locate is also: "+x.lastIndexOf("locate",15)); //7
+
+let y = "Please locate me too.";
+console.log(y.indexOf("John")); // -1
+
+String.search() method
+
+let text = "Please locate where 'locate' occurs!";
+text.search("locate") // 7
+
+let text2 = "Please locate where 'locate' occurs!";
+text.search(/locate/); // 7
+
+Two methods, search() and indexOf() works similar but are not equal.
+search() method cannot take a second start position argument.
+indexOf() method cannot take powerful search values (regular expressions).
+
+String.match() method 
+
+The match() method returns an array containing the results of matching 
+a string against a string (or a regular expression)  
+
+let text = "The rain in SPAIN stays mainly in the plain";
+text.match("ain"); // 1 ain
+text.match(/ain/); // 1 ain
+text.match(/ain/g) // 3 ain
+text.match(/ain/gi) // 4 ain
+
+The matchAll() method returns an iterator containing the results
+of matching a string against a string (or a regular expression).
+
+let txt = "I love Cats and Cats are the most lovable.";
+const iterator = txt.matchAll("Cats");
+console.log(iterator);
+
+const iterator = text.matchAll(/Cats/gi);
+console.log(iterator);
+
+includes(): this method is case sensitive.
+let txt = "Hello world, welcome to the universe.";
+console.log(txt.includes("Santa")); false.
+
+String.startsWith(): returns true if string starts with specified value.
+
+let text = "Hello world, welcome to the universe.";
+text.startsWith("Hello"); // true
+
+start position can also be specified
+
+let text = "Hello world, welcome to the universe.";
+text.startsWith("world", 5) // false
+text.startsWith("world", 6) // true
+
+endsWith() : The endsWith() method returns true if a string ends with a specified value.
+this method is case-sensitive.
+
+let text = "John Doe";
+text.endsWith("Doe"); // true;
+
+let text = "Hello world, welcome to the universe.";
+text.endsWith("world", 11); // true
+
+checks if first 11 characters of the string ends with 'world'
+
+
+COMPARISON:
+
+alert( 'Z' > 'A' ); // true
+alert( 'Glow' > 'Glee' ); // true
+alert( 'Bee' > 'Be' ); // true
+alert('a' > 'A'); // true
+
+When comparing values of different types, JS converts values to numbers.
+
+alert( '2' > 1 ); // true, string '2' becomes a number 2
+alert( '01' == 1 ); // true, string '01' becomes a number 1 
+
+
+let a = 0;
+alert( Boolean(a) ); // false
+
+let b = "0";
+alert( Boolean(b) ); // true
+
+alert(a == b); // true!
+
+From JavaScript’s standpoint, this result is quite normal. 
+An equality check converts values using the numeric conversion (hence "0" becomes 0), 
+while the explicit Boolean conversion uses another set of rules.
+
+alert(0 == false) // true
+alert('' == false) // true
+
+equality operator converts values of different datatypes into number type.
+
+but, 
+
+alert(0 === false) // false
+
+strict equality operator compares without type conversion.
+---------------------------
+
+Comparison in case of null & undefined.
+
+alert(null == undefined) // true;
+alert(null === undefined) // false. (types are different).
+
+but, for math and other comparisons,
+
+null becomes 0.
+undefined becomes NaN.  
+
+Strange observation.
+
+alert( null > 0 );  // (1) false
+alert( null == 0 ); // (2) false
+alert( null >= 0 ); // (3) true
+
+equality operator(==) and comparison operators (>= <= < >) works very
+differently.
+
+Comparison operators convert null to 0 
+but, in equality check, null equals only undefined and nothing else.
+
+
+alert( undefined > 0 ); // false (1)
+alert( undefined < 0 ); // false (2)
+alert( undefined == 0 ); // false (3)
+
+In case of comparison operators, undefined is converted to NaN.
+NaN returs false for all comparison.
+In case of equality operator undefined only equals null and nothing else.   
+
+"2" > "12" // true
+In case of string, comparison is done character by character.
+2 > 1;
+
+NOT (!):
+alert( !true ); // false
+alert( !0 ); // true       
+
+DOUBLE NOT (!!):
+alert( !!"non-empty string" ); // true
+alert( !!null ); // false
+
+same as:
+alert( Boolean("non-empty string") ); // true
+alert( Boolean(null) ); // false
+
+precedence of ! is highest, so it executes before && or ||. 
+
+Note: 0, "", null, undefined, NaN becomes false.
+
+? OPERATOR
+
+using if...else:
+
+if (age < 3) {
+  message = 'Hi, baby!';
+} else if (age < 18) {
+  message = 'Hello!';
+} else if (age < 100) {
+  message = 'Greetings!';
+} else {
+  message = 'What an unusual age!';
+}
+
+alert(message)
+
+using ? operator:
+
+let age = prompt('age?', 18);
+
+let message = (age < 3) ? 'Hi, baby!' :
+  (age < 18) ? 'Hello!' :
+  (age < 100) ? 'Greetings!' :
+  'What an unusual age!';
+
+alert( message );   
+
+- Sometimes ? can also used as if. (not recommended)
+
+let company = prompt('Which company created JavaScript?', '');
+
+(company == 'Netscape') ?
+   alert('Right!') : alert('Wrong.');
+-----------------------------
+
+

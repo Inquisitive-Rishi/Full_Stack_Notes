@@ -1,0 +1,105 @@
+Every single day:
+- we upload 4 Million hours of video on Youtube
+- 600 million tweets.
+- 70 Million Instagram pictures.
+- 4.4 Billion of us use internet every single day
+
+And, collectively we create:
+
+2.5 exabytes i.e 2.5 million terabytes i.e 2.5 quintillion bytes of data every single day.
+
+Internet it not the 'World Wide Web' though.
+
+The 'web' is a great invention
+it's the way the webpages, data, services and documents are arranged, accessed and addressed
+
+But all of this sits on top of the 'hardware' that is the 'Internet'
+which allows many many networks to talk to each other in a very 'clever way'
+
+Here's how it works:
+
+We want to watch a video of a cat.
+
+We request for that video on Youtube (or any other video streaming platform).
+
+that request shoots out of our device and travel accross the globe where the video is stored.
+
+Here's it gets really clever.
+
+sending one video in one go down one route will mean it will get stuck in traffic and
+may take ages
+
+So the video gets 'torn apart' and split up into multiple packets.
+
+Each packet makes its own way beck down different routes.
+
+And when they start arriving back at our device, they gets juggled into the right order.
+
+And when enough of the start of the video has arrived we see the video
+
+This is how information spreads accorss the world.
+
+
+At the very basic level, the Internet is a 'wire'
+
+The internet is useful because two computers connected to this 'wire' can communicate.
+
+A server is a special computer directly connected to this 'wire'.
+
+and Web pages and files exist on that server's hard drive.
+
+Each server has a unique 'Internet Protocol' address.
+Just like postal address, IP address help computers find each other.
+
+
+Here's how it all works:
+
+Your computer at home is not a server. As it's not directly connected to 'the wire'.
+
+Computer we use everyday are called 'clients'. As we're indirectly connected to the internet
+through ISP (internet service provider)
+
+
+Routers:
+
+Me and Uncle Dhoni is using the internet on separate computers.
+
+I'm updating my facebook profile page.
+Uncle Dhoni is doing market research.
+
+We're both sending packets back and forth over the internet.
+
+But what's to keep my packets from accidently ending up on my Uncle's computer screen.
+
+Solution is:
+
+- IP address
+- Routers
+
+Everything connected directly or indirectly to the internet has an IP address including
+computers, phones, servers and all of the equipment in between.
+
+Anywhere two or more parts of the internet intersect, 
+there's a piece of equipment called 'router'
+
+Routers direct the packets around the internet, 
+helping each packet get one step closer to its destination.
+
+Every time we visit a website, there's probably 10-15 routers helping packets
+make their way to and from the computer
+
+Imagine each packet as a piece of candy wrapped in several layers.
+
+The first layer is our computer's IP address.
+
+Our computer sends the packet to the first router which adds it's own IP Address.
+
+Each time a packet reaches a new router, 
+another layer is added until it reaches the server.
+
+Then, when the server sends back information, 
+it creates packets with identical wrapping.
+
+As the packets make their way over the internet back to our computer,
+each router unwraps the layer 
+to discover what's in the packet next until it reaches our computer and not our uncle's.

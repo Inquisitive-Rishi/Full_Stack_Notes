@@ -1,0 +1,8 @@
+body {
+  font-size: 2em;
+}
+
+.container {
+  display: grid;
+  grid-template: 1fr 1fr 1fr 1fr 1fr / 1fr 1fr;
+}

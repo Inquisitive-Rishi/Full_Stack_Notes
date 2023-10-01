@@ -1,0 +1,455 @@
+As we know there are 8 data types in JS:
+
+7 are 'primitive' data types and 1 is 'non-primitive' data type
+
+- primitve data types can have one element at a time.
+- non-primitive data types have 'collection' of values/elements.
+
+Object contains list of properties.
+
+const user = {
+    name : "Rishi",
+    age : 26,
+}
+
+Object has property with key : value pair
+key/name/identifier reside on left side of the property, and value reside on the right 
+side of the property.
+
+name and "Rishi" makes a single property, hence this object 'user' has two properties.
+
+Object can be created by:
+
+1. let user = new Object(); // object constructor syntax
+2. let user = {}; // object literal syntax
+
+property value can be accessed using 'dot-notation'.
+syntax: obj-name.key
+
+eg: console.log(user.name) // Rishi
+    console.log(user.age) // 26
+
+object values can be of any type:
+
+eg:    user.isAdmin = true;
+this creates a new property with key isAdmin and value true.
+
+to remove a property from object:
+
+eg:  delete user.age;
+
+this deletes the property age:26
+
+We can also use 'multi-word' property names, these names must be under quotes.
+
+eg:
+const user = {
+    name : "Rishi",
+    age : 26,
+    "is virgin" : true;
+}
+
+last property may contain comma(,): this makes it easier to move/add/remove around properties 
+as every line looks alike.  
+These are called trailing/hanging comma
+
+
+SQUARE BRACKETS
+
+we cannot access or set the value using dot notation from the property with key containing space 
+
+user.is virgin; // shows an error as JS reads it as user.is and then when compiler reaches 
+virgin it throws an error
+
+What's the solution for this?
+
+using suqare brackets.
+
+eg: user['is virgin'] = true; // set 
+
+    console.log(user['is virgin']) // get
+
+    delete user['is virgin'] // delete
+
+
+We can access the value using the user input too:
+
+eg: 
+
+const user = {
+    name: "rishi",
+    age: 26,
+    location: "Bihar",
+}
+
+let key = prompt("What do you want to know about the user?", "name");
+
+alert(user[key]) // 26 if we entered age when prompted.
+
+Note: dot-notation cannot be used similar way, returns undefined
+
+let user = {
+  name: "John",
+  age: 30
+};
+
+let key = "name";
+alert( user.key ) // undefined
+
+
+COMPUTED PROPERTY:
+
+When creating an object, we can use square bracket in an object literal
+that is called a computed property.
+
+let fruit = prompt("Which fruit to buy", "apple");
+
+let bag = {
+    [fruit] : 5,
+}
+
+alert(bag.apple) // returns 5 if user input was apple.
+
+so, the user inputs 'apple', the bag becomes
+
+let bag = {
+    apple : 5,
+}
+
+'computed property' is simple, [fruit] means that the property name should be taken 
+from fruit variable
+
+we can use more complex expressions inside squared brackets.
+
+let fruit = 'apple';
+
+let bag = {
+    [fruit + 'Computers'] : 5,
+};
+
+bag.appleComputers = 5.
+
+
+PROPERTY VALUE SHORTHAND:
+
+In real code, we often use existing variables as property names
+
+function makeUser(name, age) {
+    return {
+        name: name,
+        age: age,
+    }
+}
+
+let user = makeUser("John",30);
+alert(user.name) // John
+
+in this example, properties have same names as variables
+
+As making a property from a variable is so common that there's a special SHORTHAND
+
+function makeUser(name,age) {
+    return {
+        name,  // same as name:name  
+        age,  // same as age:age
+    }
+}
+
+We can use normmal property and shorthand property on the same object.
+
+let user = {
+    name, // same as name
+    age: 30,    
+}
+
+PROPERTY NAMES LIMITATION:
+
+We know that variables cannot have names reserved for the language like 
+'for' 'let' 'return' 
+let let = 'haha'; // won't work
+
+But, in case of object, it's completely ok as there's no limitations
+
+let obj = {
+    for: 1,
+    let: 2,
+    return: 3,
+}
+alert(obj.for + obj.let + obj.return); // 6
+
+Other types are automatically converted to strings.
+
+eg: 
+let obj = {
+    0: "test",
+};
+
+alert(obj["0"]) // test
+alert(obj[0]) // test
+both are same
+
+
+PROPERTY EXISTENCE TEST: 'in' operator
+
+It's possible to access any property from an object.
+There will be no error if property do not exist, just returns undefined.
+
+eg; 
+
+let user = {}
+
+alert(user.haha === undefined); // true
+
+The 'in' operator
+
+let user = {
+    name: "Rishi",
+    age: 26,
+}
+
+alert("age" in user); // true, the property exists.
+alert("BlaBla" in user); // false, the property do not exist.
+
+quotes is important here, 
+
+Special 'for..in' loop:
+
+For objects, there exist a special for..in loop.
+
+eg: 
+for (key in obj) {
+    .....code // executes the body for each key
+}
+
+eg: 
+let user = {
+    name : "Rishi",
+    age : 26,
+    location : "Jupiter",
+}    
+
+for (let key in user) {
+    console.log(key) // name, age, location
+    console.log(user[key]) // "Rishi", 26, "Jupiter"
+}
+
+ARE OBJECTS ORDERED?
+
+They are ordered in a special fashion.
+
+- integer properties are sorted.
+- Others appear in creation order.
+
+eg: 
+let codes = {
+  "49": "Germany",
+  "41": "Switzerland",
+  "44": "Great Britain",
+  // ..,
+  "1": "USA"
+};
+
+for (let code in codes) {
+  alert(code); // 1, 41, 44, 49
+}
+
+i.e USA comes first then Switzerland and so on and so forth...
+
+why?
+
+because they are 'integer property'.
+
+- Integer property gets converted from string to number and vice versa.
+- non integer properties are not converted and so gets displayed as it is without sorting.
+
+note: some strings like "+53" or "1.3" don't get converted to integers and are non-integer properties.
+
+So, to fix the issue with codes above, add + before every codes
+
+eg: 
+let codes = {
+  "+49": "Germany",
+  "+41": "Switzerland",
+  "+44": "Great Britain",
+  // ..,
+  "+1": "USA"
+};
+
+for (let code in codes) {
+  alert( +code ); // 49, 41, 44, 1
+}
+
+
+OBJECT VALUE CAN BE ANYTHING:
+
+const person = {
+  name: ["Bob", "Smith"],
+  age: 32,
+  bio: function () {
+    console.log(`${this.name[0]} ${this.name[1]} is ${this.age} years old.`);
+  },
+  introduceSelf: function () {
+    console.log(`Hi! I'm ${this.name[0]}.`);
+  },
+};
+
+person.name;
+person.name[0];
+person.age;
+person.bio();
+// "Bob Smith is 32 years old."
+person.introduceSelf();
+// "Hi! I'm Bob."
+
+
+The first two items in this object are 'data items'.
+The last two functions in this object are called 'method'.
+
+When an object members are functions, there is simpler syntax to write it.
+
+instead of writing bio: function(), we can write bio() {...code...}
+
+eg:
+
+const person = {
+  name: ["Bob", "Smith"],
+  age: 32,
+  bio() {
+    console.log(`${this.name[0]} ${this.name[1]} is ${this.age} years old.`);
+  },
+  introduceSelf() {
+    console.log(`Hi! I'm ${this.name[0]}.`);
+  },
+};
+
+As discussed earlier, this type of object is called 'object literal'
+as we've literally written out the object contents.
+
+This is different from the objects that are instantiated from a class. (will be discussed later).
+
+
+It's very common to create an object literal when we want to transfer a series of 
+structured data anywhere like:
+- sending a request to the server to be put into the database.
+- Sending an object is much more efficient than sending items individually.
+- Object are easier to work with than an array when we want to identify individual items by name.
+
+
+OBJECT AS OBJECT METHOD:
+
+An object property can itself be an object.
+
+eg: 
+
+change -->   const person = {
+                   name: ["Rishi", "Raj"],
+                   ...//  more codes...
+             }
+
+to this -->  const person = {
+                    name: {
+                        first: 'Rishi',
+                        last: 'Raj',
+                    },
+                    ...// more codes...
+                }
+
+now to access 'Raj', we've to change our syntax a bit.
+
+instead of --> person.name[1];
+we use --> person.name.last;
+
+
+BRACKET NOTATION:
+
+There is an alternative way to access element within an object.
+
+person['age'];
+person['name']['last'];
+
+This looks similar to how we used to access items from array.
+It's basically the same thing.
+
+Instead of using an index number to access elements, we use names associated 
+with the member's value.
+
+Hence, objects are also called 'associated arrays'.
+as objects map 'strings' to 'values' in the same way as 
+arrays map 'numbers' to 'values'.
+
+
+Which method is better to access object elements?
+
+- Dot notation is generally preferred as it's easy to read.
+
+There are some cases where we've to use bracket notation.
+
+- If an object property name is held in a variable, we can't use a dot notation to access
+  the value.
+
+const person = {
+    name: ['Rishi','Raj'],
+    age: 25,
+    function logProperty(propertyName) {
+        console.log(person[propertyName]);
+    },
+}
+
+now, to access values:
+
+logProperty('name') // ['Rishi','Raj']
+logProperty('age') // 25
+
+
+SETTING OBJECT MEMBERS:
+
+So far, we've been getting(accessing) object members.
+We can also set(update) the members using dot/bracket notation like this.
+
+const person = {
+    name: {
+      first: "Bob",
+      last: "Smith",
+    },
+    // …
+  };
+
+person['name']['last'] = "Gandharva";
+console.log(person.name); // {first: 'Bob', last: 'Gandharva'};
+
+
+We can also create new members in our object like this:
+
+person['location'] = 'Bihar';
+person['farewell'] = function() {console.log("Good bye! :(")};
+
+console.log(person.farewell()); // Good bye!;
+
+
+One useful aspect of bracket notation is that:
+
+It can be used not only member values dynamically, but member names too.
+
+We want users to store custom value types in their people data by typing member name and value
+into two text inputs
+
+We can get those values like this:
+
+let dataName = nameInput.value;
+let dataValue = valueInput.value;
+
+we could then store new member name and value to the person object like this.
+
+person[dataName] = dataValue;
+
+eg:
+
+let myDataName = "height";
+let myDatavalue = '183cm';
+person[myDataName] = myDatavalue;
+
+console.log(person.height); // 183cm;
+
+NOTE:   Adding a property to an object using above method is not possible using 'dot-notation'
+        which can only accept a literal name, not a variable value pointing to a name.
+

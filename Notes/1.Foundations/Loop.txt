@@ -1,0 +1,9 @@
+Type of loops:
+
+1. for loop
+2. while loop
+3. do while 
+4. for of 
+5. for each
+
+Note: break and continue do not work with forEach loop.

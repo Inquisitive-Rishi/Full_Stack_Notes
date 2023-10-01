@@ -1,0 +1,166 @@
+What happens when we request for a video to play on Youtube?
+
+Let's see the entire journey of data.
+
+The video we're trying to access is located somewhere inside an SSD drive of a data centre.
+
+One way for data to travel is the use of satellites.
+
+From the data centre a signal could be sent by satellite via antenna
+and from the satellite a signal could be sent to our mobile phone via another antenna near to us.
+
+However, this way of transmitting signals is not a good idea. Why?
+
+Satellites are located almost 20,000 km away from earth, so in order for a data
+transmission to be successful, it has to travel 40,000 km which is a very long distance.
+
+Such a distance would cause significant delay in receiving the signals.
+More specifically, it causes huge latency which is unacceptable for many application.
+
+So, if the data do not travel via satellites, how do they travel?
+
+It's done with a complicated network of optical fibre cables which connect b/w the data centre
+and the device
+
+Our phone can connect to the internet via cellular data (via towers) or any wifi router
+but at some point, your phone will be connected to the network of optical fibre cables
+
+As we know that the video we are watching is within the SSD device of the data centre
+This SSD access the internal memory of the server.
+
+This server basically are powerful computers whose job is to provide the video or other 
+contents when we request it
+
+Now the challenge is how to transfer the data stored inside the data center 
+specifically to our device via a complex network of optical fibre cables
+
+Here comes the role of an IP address.
+
+IP address acts as a shipping address to which all information reaches its destination.
+
+My ISP (internet service provider) decides the IP address of my device.
+
+The server in the data center also has an IP address.
+
+The server stores a website, so we can access the website just by knowing the IP address
+(basically domain names) of that website.
+
+Another thing to notice here, A server has the capability of storing multiple websites. 
+
+And if the server consists of multiple websites, all the websites cannot be accessed with
+the server's IP address.
+
+In such cases, addtional pieces of information (host headers) are used to uniquely identify 
+the website.
+
+However, for giant websites like Facebook, Amazon, Youtube, Google etc
+an entire data center is dedicated to the storage of that particular website.
+
+--------------------------------
+
+To access the internet, we use domain names instead of complex IP address
+
+From where does the internet gets IP addresses corresponding to our domain name request?
+
+For this purpose, the internet uses a huge 'phonebook' called DNS.
+
+If we don't know a person's phone number we just search by their name.
+Same goes for DNS.
+
+Your ISP or other organizations manages the DNS server
+
+Let watch the whole operation:
+
+I entered a domain name into my pc (youtube.com) 
+
+The browser sends the request to the DNS Server to get the corresponding IP Address
+
+After getting the IP address, the browser simply forwards the request to the data centre.
+More specifically, to the respective servers.
+
+Once the server gets the request to access the particular website, the data flow starts.
+
+The data is transferred in digital format via optical fibre cables.
+
+More specifically, in the form of light pulses
+
+These light pulses sometimes have to travel thousands of miles via the optical fibre cable 
+to reach their destination.
+
+During their journey, they often have to travel through tough terrains such as hilly areas,
+or under the sea.
+
+There are some global companies that lay and maintain these optical cables.
+
+Some companies are:
+AT&T Verizon Google Orange
+
+These optical fibre cables are the backbone of the internet.
+
+These cables carrying the light are stretched accross the seabed to our doorstep
+where they're connected to the router.
+
+These routers convert those light signals to electrical signals.
+
+The ethernet cables is then used to transmit the electrical signals to our laptop.
+
+However, if we're using cellular data to access the internet, the optical cables are
+connected to the cellular tower.
+
+And from the cellular tower, the signal reaches our phone in the form of electromagnetic waves.
+
+
+Since the internet is a global network, it has become important to manage things like:
+
+- IP address assignment.
+- Domain name registration.
+- etc
+
+These are all managed by an institution called ICANN (Internet Corporation for assigned names and numbers)
+located in the USA.
+
+
+One amazing thing about the Internet is its efficiency in transmitting data when compared to 
+cellular and landline technologies.
+
+The video we're watching from youtube data center is sent to us in the form of a huge collection
+of 0s and 1s.
+
+What makes the data transfer on the internet efficient is the way these 0s and 1s are chopped up
+into small chunks called 'packets' and transmitted.
+
+
+These 0s and 1s are divided into small packets by the server.
+Where each packets consists of 6 bits.
+
+Along with the bits of the video, 
+each packets consists: 
+1. Sequence no.
+2. IP address of the server and our phone.
+
+With these information the packets are 'routed' towards our phone.
+
+It's not necessary that all the packets are routed through the same path
+and each packets independently takes the best route available at that time.
+
+Upon reaching our phone, the packets are reassembled a/c their sequence number.
+
+In case if any packet failed to reach the phone, an acknowledgement is sent from the phone
+to resend the lost packet
+
+----------------------------------------------------------------
+
+There are 'protocols' for the management of this complex flow of data packets.
+
+Protocols set the rules for 'packet data conversion'
+
+Attachment of the source and destination addresses to each packet and the rules for routers etc.
+
+Some protocols:
+
+1. TCP/IP - Transport data
+2. http/https - Web access
+3. RTP - Live video streaming and VOIP calls.
+
+For different applicatins, the protocols used are different.
+ 

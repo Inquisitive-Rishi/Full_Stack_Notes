@@ -1,0 +1,26 @@
+Two sections go hand in hand:
+
+1. Problem solving approach (last section).
+2. Problem solving patterns (this section).
+
+So we discussed problem solving approach in detail, now we'll discuss 
+how to master problem solving patterns.
+
+What are problem patterns?
+
+A pattern tells us what type of problem it is.
+
+Some common problem patterns:
+- Frequency counter
+- Multiple pointers.
+- Sliding window.
+- Divide and Conquer
+- Dynamic Programming
+- Greedy Algorithms
+- Backtracking
+- etc etc....
+
+So by looking at a problem, we can deduce the pattern of the problem.
+eg: this is a sliding window pattern problem.
+    this is a Backtracking pattern problem.
+    

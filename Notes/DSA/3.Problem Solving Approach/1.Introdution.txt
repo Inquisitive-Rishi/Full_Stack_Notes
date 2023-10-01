@@ -1,0 +1,34 @@
+This folder 'Problem solving approach' is section 1 of 2 sections on problem solving:
+
+Section 1 & 2 objectives:
+
+- Define what an algorithm is?
+- Devise a plan to solve algorithm.
+- Section 2 - Covers specific approaches(frequency counter, two pointer problem, divide and conquer)
+              to problem solving. 
+
+
+SOOOO..... What is an algorithm?
+
+Algorithms are 'process' or 'set of steps' to accomplish a certain task.
+
+Why do i even want to learn this?
+
+- Almost everything that we do in programming involves some kind of algorithm.
+- It's the 'foundation' for being a successful problem solver and a developer.
+- Too important for interviews.
+
+How will you improve?
+
+1. Devise a plan for solving problems.
+2. Master common problem solving patterns.
+
+Steps to solve a problem:
+
+- Understand the problem.
+- Explore concrete examples.
+- Break it down.
+- Solve / Simplify.
+- Look back and refactor.
+
+We'll discuss each step in detail now.

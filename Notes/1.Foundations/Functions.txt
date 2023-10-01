@@ -1,0 +1,170 @@
+generate random numbers b/w 0 and number specified:
+
+function random(number) {
+    return Math.floor(Math.random() * number);
+}
+
+Function can modify outer variable as well:
+
+let userName = 'John';
+
+function showMessage() {
+  userName = "Bob"; // (1) changed the outer variable
+
+  let message = 'Hello, ' + userName;
+  alert(message);
+}
+
+alert( userName ); // John before the function call
+showMessage();
+alert( userName ); // Bob, the value was modified by the function
+
+
+If local variable is declared with the same name, 
+the function ignores the outer one:
+
+let userName = 'John';
+
+function showMessage() {
+  let userName = "Bob"; // declare a local variable
+
+  let message = 'Hello, ' + userName; // Bob
+  alert(message);
+}
+
+the function will create and use its own userName
+showMessage();
+
+alert( userName ); // John, 
+
+DEFAULT PARAMETERS:
+
+Sometimes it makes sense to assign default values 
+for parameters at a later stage after the function declaration.
+
+We can check if the parameter is passed during the function execution,
+by comparing it with undefined:
+
+eg:
+
+function showMessage(text) {
+  // ...
+
+  if (text === undefined) { // if the parameter is missing
+    text = 'empty message';
+  }
+
+  alert(text);
+}
+
+showMessage(); // empty message
+
+…Or we could use the || operator:
+
+function showMessage(text) {
+  // if text is undefined or otherwise falsy, set it to 'empty'
+  text = text || 'empty';
+  ...
+}
+
+
+Modern JavaScript engines support the nullish coalescing operator ??, 
+it’s better when most falsy values, such as 0, should be considered “normal”:
+
+function showCount(count) {
+  // if count is undefined or null, show "unknown"
+  alert(count ?? "unknown");
+}
+
+showCount(0); // 0
+showCount(null); // unknown
+showCount(); // unknown
+
+It is possible to use return without a value. 
+That causes the function to exit immediately.
+
+function showMovie(age) {
+  if ( !checkAge(age) ) {
+    return;
+  }
+
+  alert( "Showing you the movie" ); // (*)
+  // ...
+}
+
+Never add a new line after return keyword:
+
+return
+ (some + long + expression);
+
+This doesn't work, JS assumes (;) after return keyword, 
+
+it's same as
+
+return;
+ (some + long + expression);
+
+therefore, the code returns an empty return value;
+
+solution: (in case of long expression)
+put paranthesis on the same line with return keyword.
+
+return (
+  some + long 
+  + expression
+  );
+
+this works perfectly fine.
+
+One function - one action.
+
+Rewrite this function using (? and ||)
+
+function checkAge(age) {
+  if (age > 18) {
+    return true;
+  } else {
+    return confirm('Did parents allow you?');
+  }
+}
+
+using (?):
+
+function checkAge(age) {
+    return (age > 18) ? true : "Did your parents allow you?";
+}
+
+using (||):
+
+function checkAge(age) {
+    return (age > 18) || "Did your parents allow you?";
+}
+
+here age > 18 can be written without paranthesis
+
+function pow(a, b) {
+  for (int i = 1; i <= b; i++) {
+     a*=a;
+  }
+}
+
+Function is a special type of 'value': 
+we can copy a function to another variable.
+
+function sayHi() {   // (1) create
+  alert( "Hello" );
+}
+
+let func = sayHi;    // (2) copy
+
+func(); // Hello     // (3) run the copy (it works)!
+sayHi(); // Hello    //     this still works too (why wouldn't it)
+
+
+ARROW FUNCTION:
+
+If there are no arguments, parentheses are empty, but they must be present:
+
+let sayHi = () => alert("Hello!");
+sayHi();
+

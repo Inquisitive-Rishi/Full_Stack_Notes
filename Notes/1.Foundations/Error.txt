@@ -1,0 +1,15 @@
+Three types of errors:
+
+Syntax Error:
+1.SyntaxError : shows on invalid syntax of code.
+
+Logic Error: When syntax is correct, code may be wrong.
+2.ReferenceErrror : When referenced variables are not found in the code.
+3.TypeError : Usually occurs when the function is incompatible with the 
+              type of function applied.
+
+
+Logic errors are harder to fix than syntax errors, as they don't 
+directly direct us to the source of the error.
+
+Error reference link: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Errors

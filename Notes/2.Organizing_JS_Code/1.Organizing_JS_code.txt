@@ -1,0 +1,24 @@
+One of the most daunting features of JS is learning how to organize your code.
+
+Many other languages apart from JS force us to use specific patterns and data structures
+but JS is flexible in this case 
+
+i.e it gives programmer much freedom to decide the patterns
+we want to build upon.
+
+Making small programs is simple but as our program/projects become complex, it becomes hard to
+maintain unless we take care to organize our code
+
+For many coders, making decisions on design patterns is crippling
+
+So...this lesson series will cover a few of the most common design patterns that occur in JS code.
+
+We'll discuss pros and cons of each pattern and practice each patterns in project.
+
+Patterns that will be covered:
+
+1. Plain old JS objects and object constructors.
+2. Factory functions and module patterns.
+3. Classes
+4. ES6 Modules.
+

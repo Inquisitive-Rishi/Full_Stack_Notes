@@ -1,0 +1,45 @@
+Some important Array methods:
+
+Array.filter()
+Array.map()
+Array.sort()
+Array.reduce()
+
+
+1. Array.filter():
+
+const persons = [
+      { first: 'Albert', last: 'Einstein', year: 1879, passed: 1955 },
+      { first: 'Isaac', last: 'Newton', year: 1643, passed: 1727 },
+      { first: 'Galileo', last: 'Galilei', year: 1564, passed: 1642 },
+      { first: 'Marie', last: 'Curie', year: 1867, passed: 1934 },
+]
+
+Q. Filter the person(s) born in 1500s.
+
+const filtered = persons.filter(a => a.year >= 1500 && a.year < 1600);
+console.log(filtered) 
+// { first: 'Galileo', last: 'Galilei', year: 1564, passed: 1642 }
+
+filter method uses a function that  loops over the entire persons array and returns boolean.
+if the function returns true for elements in array, that element is filtered out inside a new array.
+
+
+2. Array.map():
+
+map() function takes in an array, does something with that array and returns a new array.
+
+map is like a machine that takes in a raw material and gives out a totally new product.
+
+Difference b/w map and filter is that map always returns the same amount of item as it receives
+i.e the length of input array is same as length of output array.    
+
+
+3. Array.sort();
+
+sort() function uses a function with two variables and sort the array using these two variables.
+
+eg: const sorted = inventors.sort((a,b)=> a.year > b.year ? 1 : -1);
+
+this method sorts every element (smallest to largest) from an array.
+

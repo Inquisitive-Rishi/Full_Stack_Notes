@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <script src="script.js" defer></script>    
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+    <form action="example.com/path" method="post">
+      <fieldset>
+        <legend>User's personal Info</legend>
+      <label for="first-name">first name</label>
+      <input type="text" id="first-name" placeholder="Rishi..." name="first-name">
+      <br>
+      <label for="user-email">email</label>
+      <input type="email" id="user-email" name="email" placeholder="you@example.com">
+      <br>
+      <label for="user-pwd">password</label>
+      <input type="password" id="user-pwd" name="password">
+      <br>
+      <label for="amount">amount</label>
+      <input type="number" id="amount" name="amount">
+      <br>
+      <label for="date">DOB</label>
+      <input type="date" id="date" name="DOB">
+      <br>
+    </fieldset>
+      <textarea cols="40" rows="10">Some initial text....</textarea>
+      <br>
+      <fieldset>
+        <legend>Choose games</legend>
+      <select name="games">
+        <option value="skyrim">Skyrim</option>
+        <option value="call-of-duty">call-of-duty</option>
+        <option value="diablo">Diablo</option>
+        <option value="outlast" selected>Outlast</option>
+      </select>
+    </fieldset>
+    <fieldset>
+      <legend>Choose ticket types</legend>
+        <h2>Ticket Type</h2>
+        <div>
+          <input type="radio" id="child" name="ticket-type" value="child">
+          <label for="child">child</label>
+        </div>
+        <div>
+          <input type="radio" id="adult" name="ticket-type" value="adult" checked>
+          <label for="adult">adult</label>
+        </div>
+        <div>
+          <input type="radio" id="senior" name="ticket-type" value="senior">
+          <label for="senior">senior</label>
+        </div>
+      </fieldset>
+      <fieldset>
+        <legend>pizza topping</legend>
+        <h2>Choose topping among these</h2>
+        <div>
+          <input type="checkbox" id="pepperoni" name="topping" value="pepperoni">
+          <label for="pepperoni">pepperoni</label>
+        </div>
+        <div>
+          <input type="checkbox" id="cheese" name="topping" value="cheese" checked>
+          <label for="cheese">cheese</label>
+        </div>
+        <div>
+          <input type="checkbox" id="soya-sauce" name="topping" value="soya-sauce">
+          <label for="soya-saue">soya sauce</label>
+        </div>
+      </fieldset>
+      <fieldset>
+        <legend>buttons</legend>
+        <button type="submit">Submit</button>
+        <button type="reset">Reset</button>
+        <button type="button">Click to toggle</button>
+      </fieldset>
+    </form>
+  </body>
+</html>

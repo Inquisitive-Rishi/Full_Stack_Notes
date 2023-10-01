@@ -1,0 +1,347 @@
+Topics to be discussed:
+
+- How to write an object construtor and instantiate an object.
+- Describe 'prototype' and how it can be used.
+- Explain prototypal inheritance.
+- Basic do's and don'ts of prototypal inheritance.
+- What does Object.create does
+- Explain this keyword.
+
+there are many ways to store information/s:
+
+- variable literal method i.e let playerOneName = 'Rishi' or let playerOneMarker = 'X'
+
+  But it becomes very lousy and slow when we'll be building medium to large applications
+  to remember all the different types of variable names.
+
+- A better way would be to creating object (using object literal method)  
+  where we could store both: 
+  playerName and playerMarker.
+
+eg: const player1 = {
+    name : 'Rishi',
+    marker : 'X',
+}
+
+But, what about if we want to create multiple objects for multiple players?
+
+This process then becomes tedious to create different object literals for 
+different players.
+
+So......?
+
+There's yet another 'better' way to deal with this.
+
+Creating Object Constructor:
+
+When we're creating multiple objects with same features like:
+name, marker etc we'll create an 'object constructor' 
+
+this object constructor will in turn help us make multiple objects with ease.
+
+Scenario,
+
+We want to create two player object with 'name', 'team' and 'marker'.
+
+So these two object will contain same features such as name, team and marker.
+
+It's a bad idea to create two objects with 'literal method'.
+
+Instead, we create a constructor that'll help us create those object.
+
+function Player(name,team,marker) {
+    this.name = name
+    this.team = team
+    this.marker = marker
+    this.info() = () => `${this.name} of team ${this.team} has a marker ${this.marker}.`,
+}
+
+this will help create objects with 3 properties and 1 function.
+
+using this constructor, we can create as many objects as we want.
+
+coost player1 = new Player('Rishi','Knights','X');
+const player2 = new Player('Raghav','Heros','O');
+
+we can now access properties of newly created objects.
+
+----------------------------------------------------------
+
+THE PROTOTYPE:
+
+All objects in JS have a 'prototype'.
+
+Prototype is another object that the original object inherits from.
+
+Stated simply, the original object has access to all of its prototype's methods 
+and properties.
+
+Let's break that down:
+
+1. All objects in JS have a 'prototype'
+
+two objects above player1 and player2, created from Player(name,marker) object constructor
+also have a prototype.
+
+Q. What does having a prototype mean?
+Q. What even is a prototype of an object?
+
+
+2. Stated simply, The prototype is another object.
+
+Yes...Prototype is just another object like player1 and player2.
+
+Prototype can have properties and functions just like Player objects
+have properties .name .marker and .team and function like .info() attached to them.
+
+
+3. ...that the original objects inherits from, and has access to all its prototype's
+  methods and properties.
+
+Here, the original object refers to player1 and player2.
+
+These objects have access to the prototype's properties and functions, 
+
+eg. there's an info() function of the object's prototype.
+    therefore, these objects player1 and player2 have access to the 
+    that function just as if it was it's own function.(player1.info())
+
+    Both player1 and player2 object can access the function info() since it's defined on 
+    the 'prototype'.
+
+
+For now, we might feel like we know, or at least have an idea of what a prototype 
+of an object is. 
+
+But how do we know or actually see what the prototype of an object is?
+
+Open the developer console and type:
+
+- Object.getPrototypeOf(player1) === Player.prototype // true
+- Object.getPrototypeOf(player2) === Player.prototype // true
+
+
+Ok...Now to understand the code, let's use three points from earlier.
+
+1. All objects in JS have a prototype.
+
+  We can check the object's prototype by using the Object.getPrototypeOf() function on the 
+  object.
+
+  The result of this function refers to the .prototype property of the Object constructor.
+  i.e Player(name,team,marker).
+
+
+2. The prototype is another object...
+
+  The value of the Object's constructor's '.prototype' property (i.e Player.prototype)
+  contains the prototype object.
+  (type and see on browser console.)
+
+  The reference to this value of Player.Prototype is stored in every Player object
+  every time a Player object is created.
+
+  Hence, we get true when we get Object's prototype.
+
+
+3. ..that the original object inherits from, and has access to all its prototype's 
+  methods and properties.
+
+  As said in the earlier point, every Player object has a value which refers to 
+  Player.prototype.
+
+  So, Object.getPrototypeOf(player1) === Object.getPrototypeOf(player2) // true.
+
+  So, any methods or properties 'defined on Player.prototype' will be available
+  to the created Player objects.
+
+
+Q. What does 'defining on the prototype means?
+
+eg: 
+    Player.prototype.sayHello = function() {
+      console.log("Hello, I'm a player!");
+    }
+
+    This sets the new player property/function sayHello() on the Player prototype.
+
+    Now, this property becomes available to all the Player objects i.e player1 and player2.
+
+    player1.sayHello() // "Hello, I'm a player!"
+    player2.sayHello() // "Hello, I'm a player!"
+
+So.. after defining .sayHello() function on the Player.prototype object, it then becomes
+available to player1 and player2 objects to use.
+
+Similarly, We can attach other properties and functions we want to use on all Player objects
+by defining them on the object's prototype (Player.prototype).
+
+
+.getPrototypeOf() VS .__proto__ VS [[Prototype]] :
+
+To access an object's property, we used .getPrototypeOf().
+
+same thing can be done using .__proto__ but it's not recommended 
+
+however, we should know what they're for legacy codebases.
+
+eg: 
+player1.__proto__ === Player.prototype // true
+player2.__proto__ === Player.prototype // true
+
+or, [[Prototype]]
+
+eg: player1.[[Prototype]]
+
+both of these have been deprecated, so not recommended.
+
+
+
+PROTOTYPAL INHERITANCE:
+
+Q. What is the use of Prototype? 
+
+Q. What is the purpose of defining properties and functions on the prototype?
+
+Two reasons:
+
+1. We can define properties and functions common among all objects on the prototype 
+  to save memory.
+
+  Defining every property and function takes up lot of memory,
+  especially, if we've a lot of common properties and functions and a lot of created objects.
+
+  Defining them on a centralized, shared object, which the object have access to thus 
+  saves memory.
+
+2. Second reason is for 'Prototypal inheritance'.
+  We can say that player1 and player2 object inherit from the Player.prototype object
+
+  which allows them to acccess functions like .info()
+
+
+Now, let's try to do something:
+
+Object.getPrototypeOf(Player.prototype) === Object.prototype // true
+player1.valueOf() // Player {name:"Rishi", team:"Heros", marker:"X", info: f}
+
+Q. What's this valueOf() function? Where did it come from if we did not define it?
+
+it comes as a result of:
+
+Object.getPrototypeOf(Player.prototype) having the value of Object.prototype.
+
+This means that Player.prototype is inheriting from Object.prototype. 
+
+The function valueOf() is defined on Object.prototype 
+just as .info() function is defined on Player.prototype.
+
+But, how do we know that this valueOf() function is defined on Object.prototype? 
+We make use of another function called .hasOwnProperty().
+
+player1.hasOwnProperty('valueOf') // false
+Object.hasOwnProperty('valueOf') // true
+
+Q. Now, where did this .hasOwnProperty() came from?
+
+Object.hasOwnProperty('hasOwnProperty') // true
+
+
+This is how JS makes use of prototype, 
+
+by having an object contain a value to point to prototypes and inheriting from 
+those prototypes and thus, forming a chain.
+
+This type of inheritance using prototype is hence called 'prototypal inheritance'.
+
+JS figures out which properties exists (or do not exist) on the object and start 
+traversing the chain to find the property or function like so.
+
+- Is the .valueOf() function part of the player1 object? 
+
+  No, it's not.
+  Only the name, team, marker and .info() are part of the Player object.
+
+- Is the function valueOf() part of the player1's prototype Object.getPrototypeOf(player1) 
+  and the value Player.prototype part of player's prototype?
+
+  No, only the .info() function is a part of it.
+
+- Well, then is it a part of Object.getPrototypeOf(Player.prototype) (=== Object.prototype)?
+
+  Yes, .valueOf() is defined on Object.prototype.
+
+The chain looks like this:
+
+Object.getPrototypeOf(player1) --> this outputs Player's Constructor.
+
+then, 
+
+Object.getPrototypeOf(Player.prototype)  or  Object.prototype.
+
+finally,
+
+Object.getPrototypeOf(Object.prototype)
+
+this outputs null as there is no prototype of Object's prototype.
+
+
+NOTE:
+
+- Every prototype object inherits from Object.prototype by default.
+
+- An object's Object.getPrototypeOf() value can only be one unique prototype object.
+
+
+RECOMMENDED METHOD FOR PROTOTYPAL INHERITANCE:
+
+Q. How do we utilize prototypal inheritance? 
+Q. What do you need to do to use it?
+
+Just as we used Object.getPrototypeOf() to 'get' or view the prototype of an object, 
+We use Object.setPrototypeOf() to 'set' or 'mutate' it. 
+
+Let's see how it works by adding a Person object constructor to the Player example, 
+and making Player inherit from Person.
+
+eg:
+
+function Person(name) {
+  this.name = name
+}
+
+Person.prototype.sayName = function() {
+  console.log(`Hello, I'm ${this.name}!`)
+}
+
+function Player(name, marker) {
+  this.name = name
+  this.marker = marker
+}
+
+Player.prototype.getMarker = function() {
+  console.log(`My marker is '${this.marker}'`)
+}
+
+// Object.getPrototypeOf(Player.prototype) should
+// return the value of "Person.prototype" instead
+// of "Object.prototype"
+
+Object.getPrototypeOf(Player.prototype) // returns Object.prototype
+
+
+// Now make `Player` objects inherit from `Person`
+
+Object.setPrototypeOf(Player.prototype, Person.prototype)
+Object.getPrototypeOf(Player.prototype) // returns Person.prototype
+
+const player1 = new Player('steve', 'X')
+const player2 = new Player('also steve', 'O')
+
+player1.sayName() // Hello, I'm steve!
+player2.sayName() // Hello, I'm also steve!
+
+player1.getMarker() // My marker is 'X'
+player2.getMarker() // My marker is 'O'
+
+

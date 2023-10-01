@@ -1,0 +1,5 @@
+NVM - Node Version Manager:
+NVM makes it easy to change node version and upgrade node.
+
+NPM - Node Package Manager:
+NPM is used to install various libraries and tools used in JS environment.

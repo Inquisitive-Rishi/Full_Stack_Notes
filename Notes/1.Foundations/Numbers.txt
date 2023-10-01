@@ -1,0 +1,270 @@
+Important JavaScript concepts:
+
+this
+Asynchronous JavaScript (promises, callbacks, async/await)
+Closures
+The event loop
+Recursion
+Scope
+Hoisting
+Prototypical inheritance
+bind(), call(), apply()
+reduce()
+Generators
+fetch()
+--------------------------------
+
+JS RESERVED WORDS:
+
+break case catch class const continue debugger default delete
+do else export extends false finally for function if import in
+instanceof new null return super switch this throw true try
+typeof var void while with
+-----------------------------
+
+var VS let:
+
+1. var is function scoped and global scoped only.
+
+i.e they can be accessed outside any 'block code' or 'loops' 
+but not outside functions.
+
+2. variables can be redeclared using var.
+
+var a = "lala";
+var a = "kaka";
+
+this is perfectly ok.
+
+3. var is hoisted, let/const is not.
+
+console.log(sumFunc(3,4));
+console.log(sumConst(5,1));
+
+const sumConst = (a,b) => a+b;
+
+function sumFunc(a, b) {
+    return a+b;
+}
+
+output: 
+
+7 // sumFunc works fine 
+sumConst function doesn't work and shows error:
+cannot access 'sumConst' before initialization.
+
+console.log(a);
+var a = 4;
+
+output: undefined
+why?
+
+variables defined using var are hoisted i.e they're declared at 
+the top of code
+internally they work like this.
+
+var a;
+
+console.log(a);
+
+a = 4;
+
+that's why a is output at 'undefined'
+---------------------
+
+JS Numbers
+
+let x = 123e5 => 12300000
+let y = 123e-5 => 0.00123
+
+
+Integers i.e without period or exponent notation
+is accurate upto 15 digits.
+let x = 999999999999999;   // x will be 999999999999999
+let y = 9999999999999999;  // y will be 10000000000000000
+
+let x = 0.1 + 0.2;
+console.log(x); // 0.300000000000004;
+
+let x = (0.1*10 + 0.2*10)/10;
+console.log(x); // 0.3
+
+let x = "10";
+let y = 20;
+let z = "The result will be "+x+y;
+console.log(z); //the result will be 1020
+
+JS interpreter works from left to right (--->)
+
+let x = 1;
+let y = 2;
+let z = "3";
+console.log(x+y+z); // 33;
+
+
+In all numeric operation, JS will convert all strings to numbers;
+let x = "100";
+let y = "25";
+console.log(x/y); // 4;
+
+let x = "10";
+let y = "5";
+console.log(x*y); // 50
+
+
+let x = 10;
+let y = "Apple";
+let z = x/y;
+console.log(z); // NaN
+console.log(isNaN(z)); // true
+
+
+let x = 10;
+let y = NaN;
+console.log(x+y); // NaN
+
+let x = "10";
+let y = NaN;
+console.log(x+y); //10NaN
+
+console.log(typeof NaN); // Number
+
+let myNumber = 2;
+// Execute until Infinity
+while (myNumber != Infinity) {
+  myNumber = myNumber * myNumber;
+  console.log(myNumber);
+}
+output: 4
+16...........till infinity.
+
+console.log(10/0); // Infinity
+
+console.log(typeof Infinity); //Number
+
+
+JS interprets numeric constants as hexadecimal if they're
+preceded by 0x.
+
+console.log(0xFF);  // 255
+
+let myNumber = 32;
+console.log(myNumber.toString(12));
+
+This means that the number 32 will be converted 
+to its string representation in base-12.
+
+
+let x = 123;
+let y = new Number(123);
+console.log(x+","+y);
+console.log(x==y); // true
+console.log(x === y); // false
+
+Comparing two JS Objects always returns false;
+
+let x = new Number(123);
+let y = new Number(123);
+console.log(x==y); //false
+console.log(x===y); //false
+
+let num = 1.75889384232;
+console.log(num.tofixed(2)) // 1.76;
+
+let num = "544";
+console.log(typeof num); // string
+let num2 = Number(num);
+console.log(typeof num2); // Number
+
+let myNumber = "74";
+myNumber = Number(myNumber) + 3;
+console.log(myNumber); //77
+-------------------------------
+
+Unary / Binary Operators:
+
+Unary - Operator with single operand. 
+
+eg: let x = 5;
+    alert(-x); // -5
+
+    This is negation operator (reverses the sign of a number)
+    "Negation operator is a unary operator."
+
+Binary - Operator with two operand.
+
+eg: let x = 5;
+    let y = 2;
+    alert(x-y); // 3
+
+    "Substration operator is binary operator"
+
+Unary plus (+x) converts to 'Number' data type.
+
+eg: 
+let x = "5";
+let y = "30";
+console.log(+x + +y); // 35
+Same as console.log(Number(x) + Number(y)) 
+At first, unary operators converts strings to numbers,
+then, binary operator (+) sums both numbers.
+
+'=' is also an operator.
+let a = 1;
+let b = 2;
+
+let c = 3 - (a = b + 1);
+
+alert( a ); // 3
+alert( c ); // 0
+
+// Don't write code like this, it's unreadable.
+
+Chaining assignments;
+
+let a, b, c;
+
+a = b = c = 2 + 2;
+
+alert( a ); // 4
+alert( b ); // 4
+alert( c ); // 4
+
+Chained assignments evaluate from right to left (<--|)
+
+it's better to write this way:
+
+c = 2+2;
+b = c;
+a = c;  
+
+Increment/Decrement operators can be placed before/after variables.
+
+eg: counter++ or ++counter
+
+but there is a difference:
+
+let x = 4;
+let counter = x++;
+console.log(counter); // 4
+
+let y = 4;
+let counter2 = ++y;
+console.log(counter2); // 5
+
+let counter = 0;
+alert( ++counter ); // 1
+
+let counter = 0;
+alert( counter++ ); // 0
+
+COMMA (",")
+
+let a = (1 + 2, 3 + 4);
+
+alert( a ); // 7 (the result of 3 + 4)
+
+both expression is evaluated, but the last one is returned.
+
+null + 1 = 1 (null becomes 0 after numeric conversion)
+undefined + 1 = NaN (undefined becomes NaN after numeric conversion)

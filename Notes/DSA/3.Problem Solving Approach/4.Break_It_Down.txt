@@ -1,0 +1,37 @@
+Now we know how to understand the problem and how to explore eoncrete examples.
+
+We'll see how to break down a problem into smaller chunks:
+
+Breaking down a problem involves:
+
+- Write down the steps we need to take.
+    -This forces us to think about the code we'll write before writing it.
+     It helps us catch any lingering conceptal issues or misunderstanding before
+     we dive in and worry about the details
+     eg: (language syntax as well)
+
+
+Eg: Write a function which takes in a string and returns counts of each character in the string.
+
+Steps:
+
+1. Write the steps in simple words (pseudocode).
+
+function charCount(str) {
+   // make object to return at end.
+   // loop over string for each character...
+      // if character is number/letter AND is a key in object, add one to count.
+      // if character is number/letter AND not in object, add it to the object and set value to 1.
+      // if character is something else (space,period,etc) don't do anything.
+   // return object at the end.
+}
+
+eg: let str = "Your PIN no is 22455141"
+    {
+        y : 1,
+        o : 2,
+        u : 1,
+        p : 1,
+        i : 2,
+        ........etc.
+    }

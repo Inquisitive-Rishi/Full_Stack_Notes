@@ -1,0 +1,888 @@
+Unlike JAVA or other programming language where 'this' is the 'instance' of the current
+object in a class method.
+
+'this' method cannot be used outside the method 
+and this simple approach do not create a confusion.
+
+In JS, situation is different:
+'this' is the context of a function invocation (execution) 
+
+JS has four function invocation types:
+
+1. function invocation: parseInt("hi");
+2. method invocation: console.log("HI");
+3. constructor invocation: new Player("Rishi",24,"isCool")
+4. indirect function: Hero.call(this,name,level)
+
+Each invocation types defines the context on its own way,
+So, 'this' behaves differently than the developer expects.
+
+Moreover, strict mode also affects the execution context.   
+
+The key to understanding 'this' keyword is having a clear view of function 
+invocation and how it impacts the context.
+
+This section explains function invocation, how the function invocation influences 'this'
+and demonstrate the common pitfalls of identifying the value of 'this'.
+
+
+TERMS TO FAMILIARIZE BEFORE FURTHER DISCUSSION:
+
+- Invocation --> invocation of a function or execution of a function, both are same
+                 eg: parseInt("15"); 
+
+- Context --> Context of the an invocation is the value of 'this' within the function body.
+
+- Scope --> Scope of a function is the value of variables and functions accessible within 
+            that function body.
+
+
+NOTE: The 'global object' is determined by the execution environment,
+      Inside the browser, the global object is the 'window' object.
+
+
+
+FUNCTION INVOCATION:
+
+Function invocation evaluates to the function object, followed by a pair of paranthesis
+with the agrument/s
+
+eg:
+function hello(str) {
+    return hello + ' str' + '!';
+}
+
+hello('world') // hello world!
+
+function invocation and method invocation are different which uses property accesssor
+eg: obj.myfunc() or [1,2].join(",") <-- these are method call and not function invocation
+
+Advanced example of a function invocation is IIFE (Immediately invoked function expression)
+
+const message = (function(str) {
+    return 'Hello ' + str + '!'
+})('World');
+
+IIFE is a function invocation too
+
+
+'this' IN FUNCTION INVOCATION:
+
+'this' is the global object in a function invocation.
+
+the 'global object' is determined by the execution environment.
+inside browser it's window object.
+
+In a function invocation, the execution context is the global object
+
+function sum(a,b) {
+    console.log(this === window);
+    this.myNumber = 20;
+    return a+b;
+}
+
+console.log(sum(10,20)) // true, 30
+
+but now if we type:
+
+window.myNumber // 20
+
+what happened?
+
+At the time when sum(10,20) was called, JS automatically sets 'this' as the global object
+
+when 'this' is used outside of any function, i.e inside the topmost scope (i.e the global execution context)
+it equals to the global object.
+
+console.log(this === window)
+this.myNumber = 32;
+console.log(window.myNumber) // 32;
+
+
+'this' IN FUNCTION INVOCATION - STRICT MODE:
+
+'this' is undefined in strict-mode
+
+strict mode is a stricter version of JS, which provide better security and 
+stronger error checking.
+
+eg:
+function sum(a,b) {
+    'use strict'
+    console.log(this === undefined);
+    return a+b;
+}
+
+console.log(sum(10,20)); // true, 30
+
+strict mode is also active inside inner function:
+
+function execute() {
+    'use strict' 
+
+    function calculate(a,b) {
+        console.log(this === undefined);
+        return a * b;
+    }
+    calculate(10,20)
+}
+
+execute() // true, 200
+
+
+A single JS file may contain both strict and non-strict modes
+
+So it is possible to have different context behaviour in a single script for the 
+same invocation type.
+
+function nonStrictSum(a,b) {
+    console.log(this === global);
+    return a+b;
+}
+
+function strictSum(a,b) {
+    console.log(this === undefined);
+    return a+b;
+}
+
+console.log(nonStrictSum(10,20)); // true, 30
+console.log(strictSum(10,20)); // false, 30
+
+
+PITFALL: 'this' IN AN INNER FUNCTION:
+
+const obj = {
+    a: 10,
+    b: 20,
+    execute() {
+        function add() {
+            return this.a + this.b;
+        }
+        return add()
+    }
+}
+
+console.log(obj.execute()); // NaN
+
+
+Common trap with the function invocation is thinking that 'this' is the same
+in inner function as in outer function i.e obj
+
+Context of the inner function depends on it's own invocation type and not on the
+outer function's context. 
+
+To make 'this' to have desired value, 
+
+modify the inner function's context with indirect invocation using (.call() or .apply()) 
+or use .bind() 
+
+eg: 
+const obj = {
+    a: 10,
+    b: 20,
+    execute() {
+        function add() {
+            return this.a + this.b;
+        }
+        return add.call(this)
+    }
+}
+
+console.log(obj.execute()); // 30
+
+obj.execute is a method invocation on an object
+
+thus, 'this' equals to obj.add() defined inside execute()
+
+So we might expect 'this' as obj object when invoking .add() too.
+
+add() here is a function invocation and not method invocation
+thus, this is global object or undefined in strict mode.
+
+Even if the execute() function has the context as obj, it doesn't have influence inside
+the inner function.
+
+So the result is NaN here because the add() was not invoked correctly.
+
+To solve this problem, add() method must execute with the same context as the obj.execute() method
+to access this.a and this.b properties.
+
+One solution is to change the context of the add() function to the desired context (obj)
+by calling .add.call(this)
+
+.call() modifies the context to the value specified as the first parameter.
+
+this.a + this.b is same as obj.a + obj.b
+
+To ultimately solve this problem, use arrow function
+
+eg:
+const obj = {
+    a: 10,
+    b: 20,
+    execute() {
+        const add = () => {
+            return this.a + this.b;
+        }
+        return add()
+    }
+}
+
+console.log(obj.execute());
+
+
+METHOD INVOCATION:
+
+A method is a function used in the property of an object.
+
+const myObj = {
+    helloMethod: function() {
+        return 'hello';
+    }
+}
+
+myObj.helloMethod() // 'hello'
+
+
+'this' is the object that owns the method in a method invocation.
+
+When invoking a method on an object, 'this' is the object that owns the method.
+
+eg:
+
+const calc = {
+    num: 0,
+    increment() {
+        this.num++;
+        return this.num;
+    }
+}
+
+console.log(calc.increment()); // 1
+console.log(calc.increment()); // 2
+console.log(calc.increment()); // 3
+
+calc.increment() makes the context of increment function to be calc object.
+
+So, using this.num to increment the number property works fine.
+
+
+JavaScript object inherits a method from it's prototype.
+
+When the inherited method is invoked on the object,
+
+the context of the invocation is the object itself.
+
+eg:
+const myDog = Object.create({
+    sayName() {
+        return this.name;
+    }
+});
+
+myDog.name = 'Dunkin'
+myDog.sayName() // Dunkin
+
+Object.create creates a new object myDog and sets its prototype from the
+first argument. 
+
+myDog inherits sayName() method.
+
+when myDog.sayName() is executed, myDog is the context of invocation.
+
+In class invocation, the method invocation context is also the instance itself.
+
+class Planet {
+    constructor(name) {
+        this.name = name;
+    }
+
+    getName() {
+        return this.name;
+    }
+}
+
+const mars = new Planet('Mars');
+console.log(mars.getName()) // Mars
+
+
+PITFALL: SEPARATING METHODS FROM ITS Object
+
+A method can be extracted from an object into a separate variable
+
+eg: 
+const var1 = myObj.myFunc
+now var1 is a method
+
+we might think that this method var1 has 'this' as myObj on which the method was defined.
+
+but var1 is a method which is detached from it's original object myObj.
+
+And, if the method is called without an object, a function invocation happens,
+where 'this' is global object windows or undefined (in strict mode).
+
+
+function Pet(type, legs) {
+    this.type = type;
+    this.legs = legs;
+
+    this.logInfo = function() {
+        console.log(`${this.type} has ${this.legs} legs`);
+    }
+}
+
+const dog = new Pet('Dog', 4);
+
+dog.logInfo() // Dog has 4 legs.
+setTimeout(dog.logInfo, 2000) // undefined has undefined legs
+
+we would've thought it would call dog.logInfo(), that should log information about dog object.
+
+but alas!!!
+
+Unfortunately, the method is separated from its object when passed as parameter:
+
+when a separated logInfo is invoked as function, this is global object or undefined in strict mode.
+
+the function .bind() binds the method to the object,
+
+and hence the context problem is solved.
+
+eg:
+function Pet(type, legs) {
+    this.type = type;
+    this.legs = legs;
+
+    this.logInfo = function() {
+        console.log(`${this.type} has ${this.legs} legs`);
+    }
+}
+
+const dog = new Pet('Dog', 4);
+
+dog.logInfo() // Dog has 4 legs.
+setTimeout(dog.logInfo.bind(dog), 2000) // Dog has 4 legs
+
+Another solution is to use logInfo() method as an arrow function.
+this solves the problem i.e binds 'this' lexically.
+
+If we're using classes and bind 'this' to the class instance in our method, 
+we use arrow function as the class property.
+
+eg: 
+
+class Pet {
+    constructor(type,legCount) {
+        this.type = type
+        this.legCount = legCount
+    }
+
+    logInfo = () => {
+        console.log(`${this.type} has ${this.legCount} legs.`)
+    }
+}
+
+const myDog = new Pet("Cat",4);
+myDog.logInfo() // Cat has 4 legs.
+setTimeout(myDog.logInfo, 2000) // Cat has 4 legs.
+
+
+CONSTRUCTOR INVOCATION:
+
+eg:
+function User(name) {
+    this.name = name
+    this.discordName = '@' + this.name;
+}
+
+const rishi = new User('Rishi');
+const raghav = new User; // no arguments.
+console.log(rishi.discordName);
+
+new User('Rishi') is a constructor invocation of the function User.
+
+this calls creates a new object with its name property to 'Rishi' and
+discordName property to '@Rishi'
+
+If the constructor is called without arguments, then the paranthesis can be omitted.
+
+From ECMAScript 2015, we can define constructors using 'class' syntax.
+
+class User {
+    constructor(name) {
+        this.name = name
+    }
+    sayHello() {
+        return `hello! this is ${this.name}`
+    }
+}
+
+const rishi = new User("Rishi");
+console.log(rishi.sayHello()); // hello! this is Rishi
+
+Here, the object's initilization is handled by a special method in the class called 
+'constructor'
+
+which has 'this' as the newly created object.   
+
+role of 'constructor function' is to initialize the instance.
+
+The constructor call creates an empty object that inherits properties from the 
+constructor's prototype.
+
+
+When a property accessor myObj.myFunc is preceded by 'new' keyword, JS performs 
+a 'constructor' invocation and not 'method' invocation.
+
+eg:
+
+new myObj.myFunc().
+
+the function is first extracted using a property accessor extractedFunction = myObj.myfunc.
+
+then, invoked as consttructor to create a new object: new extractedFunction();
+
+
+'this' in a CONSTRUCTOR INVOCATION:
+
+'this' is the newly created object in a constructor invocation.
+
+'this' is the context of the newly created object
+
+The constructor initializes the object with the data that 
+
+is provided in the constructor's argument,
+
+sets up initial values for properties,
+
+attaches event handlers etc.
+
+eg:
+
+function Foo() {
+    this.property = 'default value'
+}
+
+const obj1 = new Foo()
+obj1.property; // 'default value'
+
+Same thing happens using class syntax,
+
+class X {
+    constructor() {
+        this.y = 'haha'
+    }    
+}
+
+when new X is executed, JS creates an empty object,
+and makes it the context of the constructor() method.
+
+Now, we can add property using 'this' keyword.
+
+class X {
+    constructor() {
+        this.y = 'haha'
+    }    
+}
+
+const rishi = new X();
+const rasha = X();
+
+console.log(rishi.y); // haha
+console.log(rasha.y); // typeError: Class constructor cannot be invoked without 'new'
+
+console.log(rishi instanceof X); // true
+
+eg2: 
+
+const reg1 = new RegExp('\\w+');
+const reg2 = RegExp('\\w+');
+
+console.log(reg1 instanceof RegExp); // => true
+console.log(reg2 instanceof RegExp); // => true
+console.log(reg1.source === reg2.source); // => true
+
+BUUUTTT,
+
+using function invocation to create object is a potential problem.
+
+As some constructor may omit the logic to initialize the object when new keyword is missing.
+
+eg:
+
+function Cats(type, legCount) {
+    this.type = type;
+    this.legCount = legCount;
+    return this;
+}
+
+const myCat = Cats('nimbo', 4)
+console.log(myCat.type) // nimbo
+console.log(myCat.legCount) // 4
+myCat === window // true
+
+Cats is the function that sets type and legCount properties on the context object.
+
+when executing Cats('nimbo', 4) an object myCat is returned
+
+which has correct properties: myCat.type is 'nimbo' and myCat.legCount is 4
+
+We think that this works well,
+
+but, 
+'this' is windows in function invocation.
+
+Thus, Cats('nimbo',4) sets properties on window object. 
+
+Surprise ......! A new object is NOT created.
+
+
+To avoid the mistake of not entering 'new' keyword,
+
+we add verification to our code like this.
+
+function Vehicle(type, wheelsCount) {
+  if (!(this instanceof Vehicle)) {
+    throw Error('Error: Incorrect invocation');
+  }
+
+  this.type = type;
+  this.wheelsCount = wheelsCount;
+  return this;
+}
+
+// Constructor invocation
+const car = new Vehicle('Car', 4);
+car.type               // => 'Car'
+car.wheelsCount        // => 4
+car instanceof Vehicle // => true
+
+const brokenCar = Vehicle('Broken Car', 3); // Error: Incorrect invocation;
+
+
+INDIRECT INVOCATION: 
+
+Indirect invocation is performed when a function is called using myfunc.call() or myfunc.apply()
+methods.
+
+functions is javascript are first class objects which means, functions are object,
+typeof function object is 'function'.
+
+.call and .apply are used to invoke the function with confiugurable context.
+
+myfunc.call(x, a1, a2, ...) accepts first argument 'x' as the context of the invocation.
+and the 'list' or arguments (a1, a2, ...).
+
+myfunc.apply(x, [a1, a2, ...]) accepts first argument 'x' as the context of the invocation
+and the 'array' of arguments (a1, a2, ...).
+
+eg:
+function sum(a,b) {
+    return a+b;
+}
+
+console.log(sum.call(undefined, 10,20)) // 30
+console.log(sum.apply(undefined, [10,20])) // 30, here array is important.
+
+
+'this' IN AN INDIRECT INVOCATION:
+
+'this' is the first argument of .call() and .apply() in an indirect invocation.
+
+eg:
+
+const kangaroo = {
+    name:'Kangaroo'
+}
+
+function concatName(string) {
+    return string + " " + this.name;
+};
+
+console.log(concatName.call(kangaroo, 'Hello')) // Hello Kangaroo;
+console.log(concatName.apply(kangaroo, ["Hola"])); // Hello Kangaroo.
+console.log(concatName.apply(kangaroo, "Hola")); // error ---> must be array.
+
+Indirect invocation is useful when function should be executed with a specific context.
+
+eg:
+To solve the context problems with function invocation, where 'this' is always window or undefined
+in strict mode.
+
+it can be used to simulate a method call on an object
+
+function Runner(name) {
+    console.log(this instanceof Rabbit)
+    this.name = name
+}
+
+function Rabbit(name, countLegs) {
+    console.log(this instanceof Rabbit)
+    Runner.call(this, name);
+    this.countLegs = countLegs
+}
+
+const myRabbit = new Rabbit("Buggs Bunny", 4)
+
+console.log(myRabbit);
+
+here, Runner.call(this,name) inside Rabbit makes an indirect call of the parent function
+to initialize the object.
+
+
+BOUND FUNCTION:
+
+Bound function is a function whose context and/or arguments are bound to specific
+values. 
+
+Note: bound function share the same 'code' and 'scope'
+      but, different 'context' and 'argument' on execution.
+
+myfunc(x, a1, a2, ...) accepts first argument 'x' as context and an optional 
+list of arguments a1, a2 to bound to.
+
+.bind() returns a new function whose context is bound to 'x' and arguments are bound to 
+a1, a2, ...
+
+eg:
+
+function multiply(num) {
+    'use strict' 
+    return this * num;
+}
+
+const double = multiply.bind(2);
+
+here 'this' is 2 which is the context of the multiply function.
+
+console.log(double(4)); // 8
+
+here, multiply and double both have same code and scope.
+
+Difference b/w  1.call() .apply()  and 2. .bind()
+
+call() and apply() method invoke the function right away.
+
+.bind() only returns a new function which is supposed to be invoked later 
+with a pre-defined 'this' value.
+
+
+'this' INSIDE A BOUND FUNCTION:
+
+'this' is the 'first argument' of myfunc.bind(x) when invoking a bound function.
+
+the role of bind is to create a new function, whose invocation will have the context
+as the first argument passed to .bind().
+
+.bind() is a powerful technique that allows functions to create pre-defined 'this' value.
+
+eg:
+const arr = {
+    values: [1,2,3,4],
+    getValues() { 
+        return this.values;
+    },
+}
+
+const newArray = arr.getValues();
+console.log(newArray); [1,2,3,4]
+
+const arrMethod = arr.getValues;
+console.log(arrMethod()); // undefined
+
+to solve this, we use .bind
+
+eg:
+
+const arrMethod = arr.getValues.bind(arr)
+console.log(arrMethod()); // [1,2,3,4]
+
+
+arr.getValues.bind(arr) returns a function arrMethod whose context is bound to arr object.
+so when arrMethod() is invoked with 'this' as arrMethod and returns a correct array object.
+
+initially, arr.getValues is extracted into a variable arrMethod without binding,
+then, after arrMethod is invoked, the value of this was window or undefined (in strict mode)
+and not newArray object.
+
+In that case, arrMethod did not return the array.
+
+
+TIGHT CONTEXT BINDING:
+
+.bind() makes the 'permanent context link' and will always keep it. 
+
+A bound function cannot change it's linked context when using .call() or .apply() with a 
+different context.
+
+Even a 'rebound' doesn't have any effect.
+
+To change the context of an already bound function, we use 'constructor invocation'.
+
+note: we don't use it very often
+
+Constructor invocation must use regular, non-bound function.
+
+eg:
+
+function getThis() {
+    'use strict'
+    return this;
+}
+
+const one = getThis.bind(2);
+console.log(one()); // 2
+console.log(one.call(2)); // 2
+console.log(one.apply(3)); // 2
+console.log(one.bind(5)()); // 2
+
+const newOne = new one();
+console.log(newOne); // getThis {} (new object)
+
+Conclusion: only new one() changes the context of the bound function, 
+
+Other types of invocation always have this equal to 2.
+
+
+ARROW FUNCTION:
+
+Arrow function lexically bind the context, and has a shorter form.
+
+Arrow function is 'anomymous', but it's name can be inferred (indicated indirectly)
+
+Also, this does not provide 'arguments' object opposed to a regular function.
+
+The missing 'arguments' is fixed using JS's new 'rest parameters'.
+
+see the difference b/w arguments and rest parameters here: 
+https://chat.openai.com/c/7837149e-a463-404b-baad-d591a8b16484
+
+
+'this' IN ARROW FUNCTION:
+
+arrow functions do not create it's own execution context, but takes 'this' 
+from it's outer function where it is defined. 
+
+In other words, the arrow function solves 'this' lexically.
+
+eg:
+class Point {
+    constructor(x,y) {
+        this.x = x
+        this.y = y
+    }
+
+    log() {
+        console.log(this === myPoint);
+        setTimeout(() => {
+            console.log(this === myPoint);
+            console.log(this.x + ":" + this.y);
+        }, 1000);
+    }
+}
+
+const myPoint = new Point(10,233);
+myPoint.log() 10:233
+
+Arrow function 'inherits' the context from the function where it's defined.
+
+here, setTimeout() calls the arrow function with the same context (myPoint object) as the log();
+
+replacing arrow function with normal function will return 
+
+setTimeout(function() {
+            console.log(this === myPoint);
+            console.log(this.x + ":" + this.y);
+        }, 1000); // false, undefined:undefined
+
+
+So, in order for normal function to work, we need to bind this with setTimeout function
+
+ setTimeout(function() {
+            console.log(this === myPoint);
+            console.log(this.x + ":" + this.y);
+        }.bind(this), 1000);
+
+syntax: setTimeout(function() {...}.bind(this), timer)
+
+Conclusion: use arrow function. 
+
+If arrow function is declared in a global scope (outside any function), 
+the context is always 'global' (window in browser)
+
+eg:
+
+const numbers = [1,2,3,4]
+
+(function() {
+    const get = () => {
+        return this;
+    }
+
+    console.log(this === window) // true
+    get() // [1,2,3,4]
+
+    // changing arrow function context manually:
+    get.call([0]);
+    get.apply([10]);
+    get.bind([4])();
+}).call(numbers);
+
+No matter how the arrow function get() is called,
+it always keeps the lexical context 'numbers'.
+
+Indirect call with any other context get.call([0]) get.apply([10]) get.bind([4])()
+has no effect.
+
+An arrow function cannot be used as constructor.
+
+Invoking it as constructor eg: new get() throws an error.
+typeError: get is not a constructor.
+
+
+PITFALL: Defining method on an object using 'arrrow function'.
+
+defining methods on object's prototype using normal function works fine.
+
+but we cannot define method on object's prototype using arrow function. 
+
+eg: 
+function User(name) {
+    this.name = name;
+}
+
+User.prototype.sayHello = () => {
+    `${this.name} says hello.`
+}
+
+const rishi = new User("Rishi")
+
+console.log(rishi.sayHello()); // undefined
+
+since sayHello is an arrow function and is defined on the global context,
+it has 'this' as window object.
+
+It happens because context is 'static' in an arrow function 
+that doesn't change on different invocation type.
+
+function expression solves the problem as the it's context changes 
+depending on the invocation.
+
+rishi.sayHello() is a method invocation on object with the context 'rishi'.
+
+
+CONCLUSION:
+
+Function invocation has the biggest impact on 'this'.
+
+from now on:
+
+ask yourself --> how is the function invoked?
+
+and not, --> where is 'this' taken from?
+
+for an Arrow function, ask --> What is 'this' inside the outer function 
+                               where the arrow function is defined.
+
+                                
+                                ----THE END----

@@ -1,0 +1,19 @@
+Everything in JS happens inside 'Execution Context'.
+
+Execution Context is like a box where everything happens.
+
+EC is made of two parts:
+
+1. Memory Component aka Variable Envirnoment.
+2. Code Component aka Thread of Execution.
+
+Memory Component is the place where variables and functions are stored in the form of 
+key:value pair.
+
+Code Component is where all the code executes 'line by line'.
+i.e second line gets executed only after the 1st line.
+
+
+JS is a 'Synchronous Single-Threaded Language'
+
+video link: https://www.youtube.com/watch?v=ZvbzSrg0afE&list=PLlasXeu85E9cQ32gLCvAvr9vNaUccPVNP&index=2

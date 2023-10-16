@@ -1,14 +1,12 @@
-function getThis() {
-    'use strict'
-    return this;
+const obj = {
+    a: 10,
+    b: 20,
+    execute() {
+        const add = () => {
+            return this.a + this.b;
+        }
+        return add()
+    }
 }
 
-const one = getThis.bind(1);
-
-console.log(one());
-console.log(one.call(2));
-console.log(one.apply(4));
-console.log(one.bind(3)());
-console.log(new one());
-
-
+console.log(obj.execute());

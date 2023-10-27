@@ -1,0 +1,117 @@
+Module bundlers organize and combine many JS code files into a single file.
+
+This single file is production ready loadable in the browser. 
+
+Bundlers make dependency graph as it traverse from the entry point we specified. 
+
+Module Bundler keeps track of both the source file, dependency and third party dependencies.
+
+The dependency graph guarantees all source and associated code files are kept up to date 
+and error-free.
+
+This process was really complicated before module bundlers.
+
+Keeping all of the files up to date and ready was a herculean task for web developers.
+
+PRE-BUNDLER ERA:
+
+To create a basic CRUD app like grocery list, 
+we might have constructed three functions in seperated JS file. 
+We could even add some third-party library to make app a little fancy.
+
+
+eg:
+
+<head>
+    <script src="https://unpkg.org/@popperjs/core@2/dist/umd/popper.min.js"></script>
+    <script type="text/javascript" src="/tinycolor.js"></script>
+    <script type="text/javascript" src="/nav.js"></script>
+    <script type="text/javascript" src="/crud.js"></script>
+    <script type="text/javascript" src="/main.js"></script>
+</head>
+
+Using bundlers will merge the file and their dependencies into a single file.
+
+eg:
+
+<head>
+    <script type="text/javascript" src="/bundle.js"></script>
+</head>
+
+A bundler's operation is divided into two stages:
+
+1. dependency graph generation.
+2. Eventual bundling.
+
+First thing a bundler does is to generate a relationship map of all the code files.
+
+This process is called 'Dependency Resolution' 
+
+To do this, the bundler requires an 'Entry file', which is ideally our main file.
+
+It then parses through this entry file to understand its dependencies. 
+
+Following that, it traverses the dependencies to determine the dependencies of these dependencies.
+(ok! that's tricky.)
+
+It then assigns unique IDs to each file it sees throughout the process. 
+
+Finally, it extracts all dependencies and generates a dependency graph that depicts the
+relationship b/w all these files.
+
+It enables the module to construct the dependency order.
+
+It's vital for retrieving functions when a browser requests them.
+
+eg: 
+
+return { id, filename, dependencies, code, }
+
+
+It prevents 'naming conflicts' since the JS bundler has a good source map of all
+the files and their dependencies. 
+
+It detects unused files and get rid of it.
+
+BUNDLING:
+
+After the dependency Resolution phase i.e after reading inputs and traversing its dependencies,
+
+A bundler delivers 'static assets' that the browser can successfully process. 
+
+This output stage is called packing.
+
+During this process, the bundler will leverage the dependency graph to 
+- integrate our multiple code files
+- inject the required functions and module.exports object
+- return a single executable bundle that the browser can load successfully. 
+
+There are many JS module bundlers:
+
+1. Webpack 
+2. Rollup
+3. Esbuild
+4. Parcel
+5. Browserify
+
+Webpack is the most popular amongst all.
+
+
+WEBPACK:
+
+Webpack is a 'static module bundler' 
+
+It comes with a host of sophistacted and highly customizable features,
+
+It's also a:
+
+- Transformer
+- Minifier
+- Optimizer 
+
+of all types of file resources and assets.
+
+That's not all, 
+
+Webpack has a very rich plugin and loader ecosystem as well.
+

@@ -1,0 +1,254 @@
+Let's built a mini project using Webpack
+
+At first,
+
+mkdir webpack_demo
+cd webpack_demo
+npm init -y
+npm install webpack webpack-cli --save-dev
+
+This creates a new directory webpack_demo, initialize npm and installs 
+webpack locally and webpack-cli (this tool is used to run webpack on the command line)
+
+this creates two files:
+package.json
+package.lock.json
+
+create a file index.html
+create a folder src and inside this folder, create a file index.js
+
+  webpack-demo
+|- package.json
+|- package-lock.json
+|- index.html
+|- /src
+   |- index.js
+
+
+inside /src/index.js
+
+function component() {
+  const element = document.createElement('div');
+
+  // Lodash, currently included via a script, is required for this line to work
+  element.innerHTML = _.join(['Hello', 'webpack'], ' ');
+
+  return element;
+}
+
+document.body.appendChild(component());
+
+
+index.html
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Getting Started</title>
+    <script src="https://unpkg.com/lodash@4.17.20"></script>
+  </head>
+  <body>
+    <script src="./src/index.js"></script>
+  </body>
+</html>
+
+we manually imported the lodash library from the website and imported it inside html file.
+
+
+We now need to edit our package.json file and mark our package as private,
+and removing the 'main' entry. 
+This is to prevent accidental publish of the code. 
+
+
+ {
+   "name": "webpack-demo",
+   "version": "1.0.0",
+   "description": "",
+   "main": "index.js",               <-- This line is removed.
+  "private": true,                   <-- This line is added.
+   "scripts": {
+     "test": "echo \"Error: no test specified\" && exit 1"
+   },
+   "keywords": [],
+   "author": "",
+   "license": "MIT",
+   "devDependencies": {
+     "webpack": "^5.38.1",
+     "webpack-cli": "^4.7.2"
+   }
+ }
+
+
+Inside our HTML file, there is an implicit dependencies b/w script tags.
+
+Our index.js file depends on lodash being included in the page before it runs.
+
+This is because index.js never explicitly declared a need for lodash.
+
+It assumes that the global variable '_' exists.
+
+There are problems with managing JS files this way:
+
+- It's not immediately apparent that the script depends on the external library.
+- If a dependency is missing or included in the wrong order, the application will not function
+  properly
+- If a dependency is included but not used, the browser will be forced to download unnecessary 
+  code.
+
+
+So, instead of manually downloading library, we'll use webpack and npm to manage scripts.
+
+CREATE A BUNDLE:
+
+We'll have 2 code files
+
+1. Source code - code for the application that is written by developer.
+2. Distribution code - This is the minified and optimized version of the source code.
+
+source code exists in src folder.
+distribution code exists in dist folder.
+
+We'll now rearrange our files like this:
+
+  webpack-demo
+  |- package.json
+  |- package-lock.json
+  |- /dist
+   |- index.html
+  |- /src
+    |- index.js
+
+For now, we creted index.html file manually, 
+In future lessons, we'll generate this file rather than manually editing it.
+
+
+To bundle 'lodash' dependency with index.js, we'll need to install the library locally.
+
+npm install --save lodash
+
+
+PTR:
+
+When installing a package that will be installed into your production bundle,
+use npm install --save.
+
+If we're installing a package for development purpose (eg: linter, testing, libraries)
+use npm install --save-dev
+
+
+Let's import 'lodash' into our script.
+
+inside index.js
+
+import _ from 'lodash';
+
+function component() {
+  const element = document.createElement('div');
+
+  // Lodash, currently included via a script, is required for this line to work
+  element.innerHTML = _.join(['Hello', 'webpack'], ' ');
+
+  return element;
+}
+
+document.body.appendChild(component());
+
+
+Now, since we're bundling our script, we've to update index.html file.
+remove the lodash script
+modify the script tag to load the bundle, instead of raw ./src file.
+
+
+inside index.html file
+
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Getting Started</title>
+    <script src="https://unpkg.com/lodash@4.17.20"></script>  <-- remove this
+  </head>
+  <body>
+    <script src="./src/index.js"></script>           <-- remove this too.
+    <script src="main.js"></script>           <-- Add this
+  </body>
+</html>
+
+This will load the main.js file which is the output bundled file from the same directory
+where index.html file is.
+
+
+In this setup, index.js explictly requires 'lodash' to be present,
+and binds it as '_' (no global scope polluted).
+
+By stating what dependencies a module needs, webpack uses this information to build the 
+dependency graph.
+
+It then uses the graph to generate the optimized bundle where scripts will be executed in the
+correct order.  
+
+Now, before executing/running webpack, we've to make some changes in the webpack configuration file.
+
+But, from webpack 4.0, webpack do not require any configuration, 
+
+But most projects need a more complex configuration setup.
+
+which is why webpack supports a configuration file.
+
+This is much more efficient than typing in a lot of commands in the terminal.
+
+  webpack-demo
+  |- package.json
+  |- package-lock.json
+  |- webpack.config.js
+  |- /dist
+    |- index.html
+  |- /src
+    |- index.js
+
+We'll first create a new webpack configuration file webpack.config.js
+
+inside config file we define:
+- the input file
+- the output file
+- mode 
+
+
+inside webpack.config.js:
+
+const path = require('path');
+
+module.exports = {
+    mode: 'development',
+    entry: './src/index.js',
+    output: {
+        filename: 'main.js',
+        path: path.resolve(__dirname, 'dist'),
+    },
+};
+
+Note: it's absolutely necessary to define mode otherwise, it shows a wwarning and the
+        code will not work.
+
+three modes exist: 'none' | 'development' | 'production'
+
+Now, we're all set, 
+
+type:
+
+npx webpack or npx webpack --config webpack.config.js (this runs webpack with the new config file)
+
+output is like this:
+[webpack-cli] Compilation finished
+asset main.js 69.3 KiB [compared for emit] [minimized] (name: main) 1 related asset
+runtime modules 1000 bytes 5 modules
+cacheable modules 530 KiB
+  ./src/index.js 257 bytes [built] [code generated]
+  ./node_modules/lodash/lodash.js 530 KiB [built] [code generated]
+webpack 5.4.0 compiled successfully in 1934 ms
+
+this means that everything worked well.
+now if we run index.html file through live server, we can see the Hello Webpack on the screen.
+

@@ -115,3 +115,20 @@ That's not all,
 
 Webpack has a very rich plugin and loader ecosystem as well.
 
+
+To understand how Webpack performs the dependency resolution steps,
+we must know the 6 concepts:
+
+1. Entry
+2. output
+3. loader
+4. plugin
+5. Mode 
+6. Browser Compatibility
+
+Learn webpack concepts here: https://webpack.js.org/conceptss
+
+After creating the internal module map, Webpack then uses function to wrap
+the associated module bundling all together
+
+to be invoked by one singular runtime function called webpackStart();

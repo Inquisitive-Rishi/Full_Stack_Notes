@@ -1,0 +1,160 @@
+Six Concepts of Webpack:
+
+1. Entry
+2. Output
+3. Loader
+4. Plugin
+5. Mode
+6. Browser Compatibility
+
+
+ENTRY:
+
+Entry point defines which module should Webpack use to start building it's internal
+dependency.
+
+Webpack will figure out which other modules / libraries that entry point depends on.
+(directly or indirectly).
+
+by default, it's src/index.js but we can set different or multiple entry points just 
+by setting entry property in webpack config file.
+
+eg: 
+module.exports = {
+  entry: './path/to/my/entry/file.js',
+};
+
+entry point in-depth: https://webpack.js.org/concepts/entry-points
+
+
+OUTPUT:
+
+The outpout property tells webpack where to omit the bundles it creates and how to 
+name these files.
+
+It defaults to ./dist/main.js for the main output file and ./dist folder for any other 
+generated file.
+
+We can configure this part of the process by specifying an output field in our configuration:
+
+inside webpack.cofig.js:
+
+const path = require('path');
+
+module.exports = {
+  entry: './path/to/my/entry/file.js',
+  output: {
+    path: path.resolve(__dirname, 'dist'),
+    filename: 'my-first-webpack.bundle.js',
+  },
+};
+
+we use output.filename and output.path properties to tell webpack, the name of our bundle
+and where we want it to be omitted.
+
+Q. What's this 'path' that's imported on top?
+
+--> It's a core NodeJS module that is used to manipulate file path.
+
+output in-depth --> https://webpack.js.org/concepts/output
+
+
+LOADER:
+
+Webpack only understands only JavaScript and JSON files by default, 
+
+Loaders allow Webpack to process other types of files and convert them into valid modules.
+
+That can be consumed by your application and added to the dependency graph.
+
+One of the special features of Webpack is the ability to 'import' any type of module,
+eg: .css file.
+
+This allows developers to build a more accurate dependency graph.
+
+
+Loaders have two properties in Webpack configuration:
+
+1. test  2. use
+
+test identifies which file(s) should be transformed.
+use indicates which loader shall be used to do the transforming.
+
+eg:
+
+const path = require('path');
+
+module.exports = {
+  output: {
+    filename: 'my-first-webpack.bundle.js',
+  },
+  module: {
+    rules: [{ test: /\.txt$/, use: 'raw-loader' }],
+  },
+};
+
+This tells the webpack compiler the following:
+
+'Hey Webpack complier, when you come across a path that resolve to a .txt file 
+inside of a require()/import statement,
+use the raw-loader to transform it before you add it to the bundle. 
+
+NOTE:
+1. /\.txt$/ and 
+2. '/\.txt$/' or "/\.txt$/" 
+
+are two different things.
+
+first tells webpack to match any file that ends with .txt
+the second webpack to match a single file with an absolute path '.txt'.
+
+
+loaders in depth : https://webpack.js.org/concepts/loaders/
+
+
+PLUGIN:
+
+While loaders are used to transform certain types of modules,
+
+Plugins can be leveraged to perform wider range of task like:
+
+1. Bundle Optimization
+2. Asset Management
+3. Injection of environment variables.
+
+To use it, first we need to require it and add it to the plugins array.
+
+Most plugins are customizable through options.
+
+Since we can use a plugin multiple times in a configuration for different purposes,
+We need to create an instance of it by calling it with the 'new' operator. 
+
+eg:
+
+const HTMLWebpackPlugin = require('html-webpack-plugin');
+const webpack = require('webpack');
+
+module.exports = {
+  module: {
+    rules: [{ test: /\.txt$/, use: 'raw-loader' }],
+  },
+  plugin: [ new HTMLWebpackPlugin({ template: '.src/index.html' }) ],
+};
+
+html-webpack-plugin generates an HTML file for the application and automatically injects all
+the generated bundles into this file.
+
+plugins in depth : https://webpack.js.org/concepts/plugins
+
+
+
+MODE:
+
+by setting mode parameters to either:
+1. production
+2. development
+3. none
+
+We can enable webpack's built in optimizations that correspond to each environment. 
+Default value is production.
+

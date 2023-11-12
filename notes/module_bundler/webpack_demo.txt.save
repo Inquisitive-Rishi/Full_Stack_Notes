@@ -55,6 +55,8 @@ index.html
 
 we manually imported the lodash library from the website and imported it inside html file.
 
+Now, try running the code through live server inside HTML, the page will display 'hello webpack'
+
 
 We now need to edit our package.json file and mark our package as private,
 and removing the 'main' entry. 

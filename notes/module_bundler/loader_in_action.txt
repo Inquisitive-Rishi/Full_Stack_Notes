@@ -1,0 +1,58 @@
+Loading CSS in project:
+
+Edit HTML file script tag from main.js to bundle.js
+
+inside webpack.config.js change filename from main.js to bundle.js
+
+To load CSS in our page, we'll use two loaders:
+
+css-loader and style-loader which we'll import in our webpack config file.
+
+
+eg:
+ const path = require('path');
+
+ module.exports = {
+   entry: './src/index.js',
+   output: {
+     filename: 'bundle.js',
+     path: path.resolve(__dirname, 'dist'),
+   },
+  module: {
+    rules: [
+      {
+        test: /\.css$/i,
+        use: ['style-loader', 'css-loader'],
+      },
+    ],
+  },
+ };
+
+ create style.css file inside src folder, which will then be imported 
+ in our script.js file
+
+ now, in script.js file we'll import 'style.css' file 
+ 
+import _ from 'lodash';
+import './style.css';
+
+ function component() {
+   const element = document.createElement('div');
+
+   // Lodash, now imported by this script
+  element.innerHTML = _.join(['Hello', 'webpack'], ' ');
+  element.classList.add('hello');               <-- add a class here -----
+
+   return element;
+ }
+
+ document.body.appendChild(component());
+
+now, inside style.css file:
+
+.hello {
+    color: red;
+}
+
+finally, run npx webpack or npm run build to see the newly applied style 
+by running HTML file.

@@ -1,0 +1,18 @@
+CSS properties:
+
+1. Background
+2. Border / Border radius
+3. Box-Shadow
+    eg: box-shwdow: 2px 2px 2px 1px rgb(0,0,0,0.2);
+
+    offset-x | offset-y | blur-radius | spread-radius | color
+
+    eg: box-shadow: inset 5em 1em gold;
+
+        inset and color values are optional
+
+    we can also use multiple shadows separated by commas(,):
+
+    eg: box-shadow:
+        3px 3px red,
+        -1em 0 0.4em olive;

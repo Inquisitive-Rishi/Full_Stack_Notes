@@ -1,0 +1,5 @@
+To prepare environment and creating server, we need to install 3 dependencies
+1. express 2. socket.io 3. nodemon
+
+install all those 3 using npm;
+

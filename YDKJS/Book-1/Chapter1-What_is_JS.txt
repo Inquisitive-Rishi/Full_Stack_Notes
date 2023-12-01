@@ -1,0 +1,46 @@
+JS is a broad and sophisticated language with many features and capabilities
+
+But, JS is founded on three foundational pillars:
+1. Scope / Closures
+2. Prototypes / Objects
+3. Types / Coercion
+
+The official name of JS specified by TC39 is ECMAScript
+
+TC39? --> It is the technical steering committee that manages official specification for the
+          language
+          They regularly meet to vote on agreed changes which they then submit to ECMA
+          ECMA --> It's the standard organisation.
+
+TC39 committee is comprised of 50-100 people from different web-invested companies
+
+such as browser makers (google, mozilla, apple) and device makers (samsung etc)
+
+All members are volunteers and receive compensation for their duties.
+
+TC39 members meets every month, usually for about three days to review work done by members
+sincce the last meeting, discuss issues and vote on proposals. 
+
+Meeting locations rotate among member companies willing to host.
+
+All TC39 proposals go through 5 stage process (stage0 - stage4)
+
+Once a proposal reaches stage4 status, it is eligible to be included in the next yearly revision
+of the language
+
+It can take from few months to a few years for a proposal to work its way through these stages.
+
+All proposals are managed in the open, on Github repository - https://github.com/tc39/proposals
+
+
+THE WEB RULES EVERYTHING ABOUT JS:
+
+While the environment that runs JS is expanding (from browsers to servers (nodeJS), to robots,
+to lightbulbs, to ...). The one environment that rules JS is the web. 
+
+For most parts, JS defined in the specification and the JS that runs in the browser-based JS
+engines is the same. 
+
+But there are some differences that needs to be considered. 
+
+

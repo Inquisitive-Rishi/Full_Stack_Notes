@@ -1,0 +1,37 @@
+When the client communicates with the server, it needs to indicate 
+what kind of action that it expects the server to take on behalf of that.
+
+This particular request to the server is called HTTP request method / HTTP Verbs
+
+Different HTTP methods available for us:
+
+- GET PUT POST DELETE PATCH
+
+also, 
+
+- HEAD CONNECT OPTION TRACE
+
+we'll discuss first five for now.
+
+eg:
+
+I've an E-commerce store and i've a list of products 
+and the URL is referring to the first product eg url: api/products/p1
+
+- If I'm sending an GET request to this particular URL, I'm telling the server
+  that i need the resoure at this particular URL.
+
+  Then the server fetches it and returns it to client.
+
+- PUT request is used to update the resource on the server.
+
+- POST request is used to create data on that resource on the server.
+
+- DELETE request is used to delete data at that resource
+
+- PATCH request the server to partially update the data at the resource.
+
+
+
+
+

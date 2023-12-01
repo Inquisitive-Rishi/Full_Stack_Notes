@@ -254,3 +254,4 @@ webpack 5.4.0 compiled successfully in 1934 ms
 this means that everything worked well.
 now if we run index.html file through live server, we can see the Hello Webpack on the screen.
 
+

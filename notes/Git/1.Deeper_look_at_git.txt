@@ -1,0 +1,258 @@
+Topics to be discussed:
+- History changing git command
+- Different ways of changing History
+- Using remotes to change History
+- Dangers of history-changing operations
+- Best practices of history-changing operations
+- Pointers
+
+
+1.CHANGING HISTORY:
+
+By mistake, we commit too early and are missing a file.
+Maybe we mess up one of the commit message and omit one important detail.
+
+We'll see some ways to change recent and distant history to fit our needs.
+
+We'll cover:
+ - Changing most recent commit
+ - Changing multiple commit message
+ - Reorder commit
+ - Squash commits together
+ - Split up commits
+
+Create a git repo and clone it.
+cd into the repo 
+
+inside git CLI:
+
+type:
+  $ touch test{1..4}.md
+  $ git add test1.md && git commit -m 'Create first file'
+  $ git add test2.md && git commit -m 'Create send file'
+  $ git add test3.md && git commit -m 'Create third file and create fourth file'
+
+In this part, we'll use 3 git commands: git amend | git rebase | git squash | git reset.
+
+if we commit too early and missed to add a file just like we forgot to add test4.md file here.
+we'll use --> 
+git add test4.md 
+git commit --amend
+
+This opens editor we just save and exit the tab, Now everything is fine.
+
+This not only edit the last commit, but replaces that commit with an entirely new commit.
+
+When rewriting history always make sure that you’re doing so in a safe manner, 
+and that your coworkers are aware of what you’re doing.
+
+
+  CHANGING MULTIPLE COMMITS:
+  
+To modify multiple commits i.e 
+
+We've commits further back in our history that we want to modify.
+
+This is where 'git rebase' comes into play.
+
+git rebase -i is a command that allows us to interactively stop after each commit we're trying to modify.
+and then make whatever changes we wish to make.
+
+We do have to tell which is the last commit we want to edit
+
+eg:
+git rebase -i HEAD~2 (note: this is approx sign and not hyphen) allows us to edit last 2 commits
+
+type:
+git rebase -i HEAD~2
+
+This opens text editor with the following lines:
+
+pick eacf39d Create send file
+pick 92ad0af Create third file and create fourth file
+
+These lines are in the opposite order of how git log displays commit.
+
+commit we want to edit is the first one:
+
+we change from 'pick' to 'edit'
+
+edit eacf39d Create send file
+
+ctrl+s --> ctrl+w this saves and closes the editor
+
+This displays these text in the CLI:
+
+You can amend the commit now, with
+       git commit --amend
+Once you're satisfied with your changes, run
+       git rebase --continue
+
+Type git commit --amend 
+
+this opens the code editor again now edit the commit, save and close.
+Then, type git rebase --continue
+
+This successfully edits the commit(s) and displays this:
+
+Successfully rebased and updated refs/heads/main
+
+now, we type git log and confirm everything is well
+
+
+SQUASHING COMMITS:
+
+using 'squash' for our commits is a very handy way to keep our git history tidy.
+
+Squashing makes it easier for others to understand the history of the project
+
+Whenever a feature branch is merged, we end up with visually complex logs of changes
+feature branch had on main branch.
+
+These commits are important while the feature is in development but aren't really
+necessary when looking through the entire history of the main branch.
+
+Let's say we want to squash second commit into the first commit on the list,
+i.e create first file
+
+First, let's rebase all the way back to our root commit by typing:
+git rebase -i --root
+
+this opens editor with following lines:
+
+pick e30ff48 Create first file
+pick 92aa6f3 Create second file    <-- remove pick and add squash here
+pick 05e5413 Create third file and create fourth file
+
+save and exit the editor
+
+now git commit --amend
+
+this shows two git commits:
+
+remove the second commit line i.e add second file and edit the first commit to 
+'create first and second file'
+
+save and exit the file
+
+now type git rebase --continue;
+
+
+SPLITTING UP A COMMIT:
+
+Before diving into remotes, we're going to see a handly git command 'git reset' 
+
+We split a commit if we had a commit that was describing too much at once. 
+
+So we split a long commit into two or more separate commits.
+
+To split a commit, we use the classic rebase tool, change 'pick' to 'edit' to edit the commit.
+
+But, we are not using this for now,
+
+instead we use: git reset HEAD^
+
+This resets the commit to the one right before HEAD.
+
+This allow us to add the file individually:
+
+$ git reset HEAD^
+$ git add test3.md && git commit -m 'Create third file'
+$ git add test4.md && git commit -m 'Create fourth file'
+
+first command git reset HEAD^ removes the commit 
+then in the last two lines we add files and then commit them separately.
+
+
+git reset does two things here:
+
+- We reset the current branch by pointing HEAD at the commit right before it. 
+- It also updates the index (the staging area) with the contents of wherever HEAD is nnow pointed. 
+
+So, our staging area is also reset to what it was at the prior commit. 
+
+
+Now, let's say we want to move where HEAD points to but don't want to touch the staging area.
+
+If we want to leave the index alone, you can use git reset --soft.
+
+Thsi would only perform the first part of 'git reset' where the HEAD is moved to the point
+somewhere else.
+
+git reset --soft is like a 'more powerful git amend'
+
+Instead of changing the last commit we can go back multiple commits and combine all the 
+changes included into one commit.
+
+The last part of reset we want to discuss is 'git reset --hard'.
+
+This performs all steps of git reset i.e moving the HEAD and updating the index, 
+but, it also updates the working directory. 
+
+PTR: This can be dangeroous as it can destroy data.
+
+A hard reset overwrites the file in the working directory to make it look exactly like 
+the staging area of wherever HEAD ends up pointing to.
+
+Similarly to git commit --amend, a hard reset is destructive command which overwrites history.
+
+It doesn't mean that we should completely avoid and use it if we know what we're doing.
+
+
+BRANCHES ARE POINTERS:
+
+What are branches?
+
+We know that branches hold different 'reality versions' of our file.
+
+Now, we'll know what are branches under the hood, and what it means for branches to be 'pointers'.
+
+Before we dive into branch, we'll talk about commits.
+
+Commits are 'screenshot'.
+
+every time we type git commit, computer takes a picture of the file that was staged using git add.
+
+In other words, our entire tracked workspace gets copied.
+
+So, what's a branch?
+
+We might visualize branch as a 'group of commits'
+
+well, that's not actually the case,
+
+A branch is actually a pointer to a single commit.
+
+We might ask, if branch is a finger pointing to a single commit,
+
+How do that single commit knows about all the commit that came before it?
+
+Well, the answer is,
+
+A commit is also a pointer that points to the commit that came before it.
+
+Ok let's look back what we did to understand this.
+
+When we used git rebase -i HEAD~2,
+
+This command lets us edit last two commits,
+
+Do we have any guesses on how git knew which two commits to edit?
+
+The answer is pointers
+
+We start at HEAD, this is a special pointer for keeping track of the branch we're currently on.
+
+HEAD points to our most recent commit in the current branch.
+
+That commit points to the commit made directly before it, which we can call commit two.
+
+That's how git rebase -i HEAD~2 starts with a HEAD pointer, and then follows subsequent pointers
+to find which two commits to edit.
+
+So, summary of this story is:
+
+Branch is simply a poininter to a single commit.
+A commit is a snapshot,
+and it's a pointer to the commit directly behind it in the history. That's it.
+

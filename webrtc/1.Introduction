@@ -1,0 +1,133 @@
+WebRTC has many things involved:
+
+WebRTC peer connection
+Caller - Callee --> It's not official name
+Signalling server
+Stun server
+Turn server
+
+WebRTC is an open source project that enables peer-to-peer connections through the browsers or
+applications.
+
+WebRTC allows us to exchange any kind of media (audio, video, data) without any required plugin
+or framework.
+
+Apps that use WebRTC:
+Google meet and Google hangout
+FB messennger
+Discord
+
+To establish direct connection b/w two or more people we need to exchange some necessary data
+through the 'signalling server'
+
+
+SIGNALING SERVER:
+
+Signaling server does not do anything WebRTC specific.
+
+This helps exchange necesssary information that is required to establish connnection b/w users.
+
+For signalling, we use whatever we like from 'WebSockets' to 'XMLHTTPRequest'
+
+So, what sort of data is to be exchaged through signalling server?
+
+- Data related to internet connection details
+- Information about the 'codec' which we're using.
+- Info about the browser.
+
+
+STUN SERVER:
+
+Before we establish connection, we need to get the information about our internet connection detail.
+This detail is returned by Stun Server.
+
+We ask stun server for our internet connection details.
+
+So after we get the details, we can exchange those data with the callee through signalling server.
+
+
+STUN (Session Traversal Utilities for NAT):
+
+This allows clients to discover their public IP address, and the type of NAT they're behind.
+This information is used to establish media connection.
+
+In 15-20% cases, Stun server fails to establish connection b/w peers, then we will need TURN SERVER.
+
+
+TURN SERVER:
+
+TURN(Traversal Using Relay NAT)
+It is a protocol for relaying network traffic.
+
+Turn Server just relays(pass on) the data, It does nothing with the data.
+
+Turn server will be used if stun server fails.
+
+Turn server will be used as an 'assist' to establish connection b/w peers.
+
+Turn server are not public, because of the cost they generate because of the traffic that is
+going through them.
+
+So, if we are not able to establish connection b/w two users, Turn servers will help us to do It
+by relaying the data (audio, video, data) b/w users by acting as a messenger.
+
+
+SDP(Session Description Protocol):
+
+Before we establish WebRTC direct connection b/w users, we need to exchange some data.
+
+This first data that we need to exchange is SDP.
+
+- SDP is a format to describing multimedia communication sessions for the purpose of 
+  session announcement and session invitation.
+
+- It does not deliver the media data but is used for negotiation b/w peers of various 
+  audio and video codecs, source address, timing information of audio and video.
+
+So, before exchanging internet details, we exchange SDP
+
+Caller will create a WebRTC offer that will be passed to callee thorugh Signalling Server.
+
+Callee will be able to save that, prepare the answer (SDP) and send it to the caller through 
+the signalling server
+
+So both caller and callee have their own SDP and the SDP of each other. 
+
+Now, the second type of data that will be exchanged is 
+
+internet connection details aka (ICE Candidates)
+
+
+ICE CANDIDATES:
+
+Apart from exchanging information about the media (through SDP),
+
+Peers must exchange information about their network connection. 
+
+This are called Ice Candidates
+
+It details the available methods peer is able to communicate (directly or through TURN server)
+
+Typically each Peer will propose it's best candidates first and eventially the worst
+
+Ideally, candidates are UDP (It's faster) and media streams are able to recover from
+interruptions relatively easily
+
+ICE Standard does allow TCP candidates as well.
+
+
+So, we get our ICE candidates from the Stun server and then we exchange it to callee through
+the signalling server
+
+Callee is also doing the same, i.e getting ICE candidates from the Stun server and sending
+the informmation to the caller through the signalling server.
+
+
+Step by step process: 
+
+- Caler makes a WebRTC offer (including SDP (that contains media info)).
+- Callee returns the WebRTC answer (along with SDP of callee).
+- Caller gets ICE candidates from Stun Server and sends it to callee through signalling server.
+- Callee returns her ICE candidate that he/she got from her/his own stun server.
+- After this ICE candidates have been exchanged, the connection gets established.
+- We also add turn server in the middle (just in case connection fails.) 

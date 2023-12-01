@@ -1,0 +1,66 @@
+There are many different types of form input 'types' which users enter into.
+
+these are:
+
+text - used to enter only text
+email - used to enter only email
+password - used to enter only password
+number - used to enter only numbers.
+date - creates a custom date picker for users to choose from
+radio - create button/s to choose from (only one at a time)
+checkbox - create checkboxes (can have multiple selected)
+range - create slider
+
+These are all done under form element tag.
+This tag is just like div tag but for form elements.
+
+after/before every 'input' tag there must be a 'label' element tag to 
+link with the text field of the forms.
+
+'select' element tag is used to select from multiple options using dropdown.
+'option' tag is used within the 'select' tag.
+there can be multiple option tags depending on the no:of options we want the users to choose.
+
+
+There are three types of buttons:
+
+1. Submit button - submits the form to the server.
+2. Reset button. - resets the entire form content.
+3. General button (anything we want using JS).
+
+
+when we leave button type undefined, it defaults back to submit button.
+It's recommended to specify all our button type to avoid unnecessary issue.
+
+
+fieldset is used to organize the form contents into different sections.
+i.e every section must be covered under fieldset tag.
+
+just under the fieldset tag, we use 'legend' tag to title each of our section 
+within the form.
+
+EASY TO STYLE: 
+
+- form
+- fieldset & legend
+- single line text i.e input (except: input type="search")
+- textarea
+- button
+- label
+- output
+
+HARDER TO STYLE:
+
+- checkboxes
+- input type="search"
+
+MUCH HARDER TO STYLE:
+
+- elements involved in creating dropdown widgets:
+  (select, option, optgroup, datalist)
+
+- input type="color"
+- date related controls i.e input type="datetime-local"
+- input type='range'
+- input type='file'
+- <progress> & <meter>

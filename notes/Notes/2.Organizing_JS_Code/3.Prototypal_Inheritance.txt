@@ -44,3 +44,30 @@ const hero2 = new Healer('Khajit',2,'cure');
 // created two character constructors called Warrior and Healer from the original constructor,
 // added methods to the prototypes and created individual character instances.
 
+
+In olden days, Prototype was set using __proto__ as compared to relatively new way Object.setPrototypeOf()
+
+there is a difference between __proto__ and [[Prototype]]
+
+let animal = {
+  eats: true,
+  walk() {
+    alert("Animal walk");
+  }
+};
+
+let rabbit = {
+  jumps: true,
+  __proto__: animal
+};
+
+let longEar = {
+  earLength: 10,
+  __proto__: rabbit
+};
+
+// walk is taken from the prototype chain
+longEar.walk(); // Animal walk
+alert(longEar.jumps); // true (from rabbit)
+
+The value of __proto__ can either be an object or null, NOTHING ELSE

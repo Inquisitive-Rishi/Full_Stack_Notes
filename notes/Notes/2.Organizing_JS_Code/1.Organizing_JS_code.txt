@@ -22,3 +22,28 @@ Patterns that will be covered:
 3. Classes
 4. ES6 Modules.
 
+tips:
+
+const user = {
+    name: 'Rishi',
+    age: 24,
+    marker: 'X'
+}
+
+console.log(Object.keys(user)); 
+// [ 'name', 'age', 'marker' ]
+
+
+for..in loops over inherited properties too..
+
+let animal = {
+  eats: true
+};
+
+let rabbit = {
+  jumps: true,
+  __proto__: animal
+};
+
+for (let p in rabbit) console.log(p)
+// jumps, eats

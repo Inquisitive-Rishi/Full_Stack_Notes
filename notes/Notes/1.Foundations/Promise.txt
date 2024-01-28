@@ -1,0 +1,154 @@
+create a promise:
+
+const promiseOne = 
+
+Output:
+Task 1 complete
+
+- there are two functions i.e 'resolve' & 'reject' associated with promises
+- Connect resolve with then by inserting resolve() at the end within the async Task
+
+i.e 
+
+const promiseOne = new Promise((resolve, reject) => {
+    setTimeout(() => {
+        console.log("Task 1 complete")
+        resolve()                           <-- add this to connect to then 
+    }, 2000)
+})
+
+promiseOne.then(() => {
+    console.log("Promise Resolved")
+})
+
+now output:
+Task 1 complete
+Promise Resolved
+
+
+We can directly use chainable promise like this
+
+new Promise((resolve, reject) => {
+    setTimeout(() => {
+        console.log("Task 1 complete")
+        resolve()
+    }, 2000)
+}).then(() => {
+    console.log("Promise Resolved")
+})
+
+
+All data gets received within the 'resolve' as an object
+
+const promiseOne = new Promise((resolve, reject) => {
+    setTimeout(() => {
+        console.log("Async task 1");
+        resolve({name:"Rishi", age:25, profession:"Stenographer"})        
+    }, 1000)
+})
+
+promiseOne.then(data => {
+    console.log(data)
+})
+
+output:
+{ name: 'Rishi', age: 25, profession: 'Stenographer' }
+
+
+
+using 'Reject' and 'promise.finally'
+
+const promiseOne = new Promise((resolve, reject) => {
+    setTimeout(() => {
+        console.log("Hello")
+        let error = false;
+        if (!error) {
+            resolve({username:"Rishi Raj", age:29, password:"3423432sdf"})
+        } else {
+            reject('Error: Something went wrong')
+        }
+    },2000)
+})
+
+promiseOne
+.then(data => {
+    console.log(data);
+})
+.catch(err => {
+    console.log(err);
+})
+.finally(()=> {
+    console.log("Either resolved or rejected");
+})
+
+finally runs everytime i.e even if request is either resolved or rejected
+
+
+ASYNC/AWAIT:
+
+TRY...CATCH is used with Async / Await
+
+first we create promise then consume that promise using async/await
+
+Async / Await do not handle errors by default, for this we use Try..Catch block to handle error gracefullly
+
+const p1 = new Promise((resolve, reject) => {
+    setTimeout(() => {
+        console.log("Hello");
+        let err = false;
+        if (!err) {
+            resolve({username: "Rishi Raj", age:25, isVirgin: false})
+        } else {
+            reject("Error: Something went wrong")
+        }
+    },1000)
+})
+
+async function consumePromise() {
+    try {
+        const response = await p1;
+        console.log(response);
+    } catch (error) {
+        console.log(error);
+    }
+}
+consumePromise()
+
+
+EXAMPLES OF ASYNC / AWAIT
+
+async function getData() {
+    try {
+        const response = await fetch("https://jsonplaceholder.typicode.com/users");
+        const data = await response.json()
+        console.log(data);
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+getData()
+
+ouputs all the data
+
+
+EXAMPLE OF PROMISE:
+
+Using fetchAPI -> fetchAPI response type is Promise i.e it returns a promise upon fetch
+
+fetch("https://jsonplaceholder.typicode.com/users")
+.then(res => {
+    return res.json()
+})
+.then(data => {
+    console.log(data);
+})
+.catch(err => {
+    return err;
+})
+
+They both do the same thing
+
+
+Before fetchAPI there was XHTTPRequest that isn't used most often because
+we need to keep track of status codes etc

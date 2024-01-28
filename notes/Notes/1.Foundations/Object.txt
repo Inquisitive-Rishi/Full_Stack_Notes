@@ -421,7 +421,7 @@ console.log(person.name); // {first: 'Bob', last: 'Gandharva'};
 We can also create new members in our object like this:
 
 person['location'] = 'Bihar';
-person['farewell'] = function() {console.log("Good bye! :(")};
+person['farewell'] = function() {console.log("Good bye!")};
 
 console.log(person.farewell()); // Good bye!;
 
@@ -492,12 +492,15 @@ console.log(newObj); // Output: {}
 
 const myObject = { a: 1, b: 2 };
 Object.freeze(myObject);
+
+// prevents adding, delete and modify properties of object
 // Trying to modify the frozen object will result in an error
 
 - Object.seal()
 
 const myObject = { a: 1, b: 2 };
 Object.seal(myObject);
+// 
 // Trying to add or remove properties will result in an error
 
 - Object.getOwnPropertyNames()
@@ -523,6 +526,9 @@ console.log(symbols); // Output: [Symbol(x), Symbol(y)]
 const myObject = {};
 const prototype = Object.getPrototypeOf(myObject);
 console.log(prototype); // Output: {}
+
+note: Object.keys() focuses on enumerable properties, whereas Object.getOwnPropertyNames() includes both enumerable and non-enumerable properties. Additionally, neither method considers inherited properties; they only operate on the properties directly defined on the object itself.
+
 
 - Object.is()
 

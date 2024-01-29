@@ -108,7 +108,7 @@ x.padStart() | x.padEnd()
 let text = 4;
 let str = text.toString();
 let padded = str.padStart(4,"0");
-console.log(padded);
+console.log(padded); //0004
 
 let text = "5";
 let padded = text.padStart(4,"0");

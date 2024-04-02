@@ -205,3 +205,561 @@ db.podcasts.deleteOne({_id: 242434sadfadsf})
 delete document with id: 242434sadfadsf
 
 db.podcasts.deleteMany({ category: "crime" })
+
+
+
+CHAPTER 4: MODIFYING QUERY RESULTS
+
+Lesson 1: Sorting and Limiting:
+
+Cursor.limit() | Cursor.sort()
+
+Cursor is nothing but a pointer to result set of query
+
+find() returns a cursor that points to the method that match that query
+
+Cursor methods are chained to queries, they perform actions on result set.
+
+eg:
+
+db.companies.find({category_code:"music"}, {name:1, number_of_employees:1}).sort({number_of_employees:-1}).limit(5)
+
+Well, that's a long query:
+
+it contains find -> projection (1 to provide only specified field) -> sort -> limit
+
+note: limit is used to increase performance of app by limiting the result 
+      projections are used to limit the no:of specified field to prevent unnecessary bandwidth
+
+
+Lesson 2: Return specific data from the query:
+
+projection:
+
+first find the specified documents, then use projection to view the specified field:
+
+eg:
+
+db.inspections.find({ result: {$in: ["pass","warning"]} }, { date:0, address_zip:0 })
+we can use 0,0 or 1,1 but not 0,1 or 1,0 to include or exclude
+
+
+Lesson 3: Count documents:
+
+countDocuments()
+
+eg:
+db.trips.countDocuments()
+output: 2321
+
+eg:
+db.trips.countDocuments({tripDuration: {$gt:120}, usertype:"subscriber"})
+output: 632
+
+
+
+CHAPTER 5: AGGREGATION:
+
+
+Lesson 1: Introduction
+
+Aggregation is a framework that contains 'multi-stage' queries
+
+this multi stage forms a pipeline
+
+This includes two keywords: 1. Aggregation 2. stage
+
+Aggregation: Analysis and summary of data
+
+Stage: Aggregation operation performed on the data.
+
+Aggregation Pipeline: A series of stages completed one at a time, in order.
+
+Stages:
+Filter -> Sort -> Group -> Transform
+
+What are output on one stage becomes input of next stage
+
+There are quite a few 'stage names' -> see the documentations
+
+Some are:
+$match --> Filters the data that matches criteria.
+$group --> groups documents based on criteria
+$sort --> Puts the document in a specified order
+
+
+Lesson 2: Using $match and $group stages in aggregation pipeline
+
+
+$match:
+It's recommended to use $match at the top of the pipeline: 
+- to narrows the query results
+- so that it can use 'indexes' (we'll talk about that later)
+- works just like find method
+
+eg: 
+db.zips.aggregate([
+    { $match: { "state": "CA" } }
+])
+
+Now, we want to group every zipcodes by 'cities'
+
+
+$group:
+
+group documents by 'group key'
+output is one document for each unique value of the group key.
+
+syntax:
+
+{
+    $group:
+        {
+            _id: <expression>,                              <-- group key
+            <field>: { <accumulator> : <expression> }
+        }
+}
+
+eg: 
+
+{
+    $group: 
+        {
+            _id: "$city",                                   <-- group key
+            totalZips: { $count: {} }
+        }
+}
+
+
+now let's use the aggregation pipeline using $match and $group
+
+db.zips.aggregate([
+    {
+        $match: { "state": "CA" }
+    },
+    {
+        $group: {
+            _id: "$city",
+            totalZips: { $count: {} }
+        }
+    }
+])
+
+output:
+
+[
+    { _id: "ANNAPOLIS", totalZips: 2 },
+    { _id: "ONYX", totalZips: 4 },
+    { _id: "SAN PEDRO", totalZips: 1 },
+    { _id: "BROOKS", totalZips: 2 },
+    { _id: "WILLIAMS", totalZips: 3 }
+]
+
+
+Lesson 3: Using $sort and $limit stages in the aggregation pipeline
+
+First, we see them individually
+
+eg:
+
+db.zips.aggregate([
+    {
+        $sort: {
+            population: -1
+        }
+    }
+])
+
+sort population field in descending order
+ 
+now,
+
+eg:
+
+db.zips.aggregate([
+    $sort: {
+        $pop: -1
+    },
+    {
+        $limit: 5
+    }
+])
+
+Note: Order of 'stages' matter here
+
+
+Lesson 4: $project, $count and $set
+
+$project:
+- determines output shape.
+- It is similar to find() operation
+- Should be the last stage to format the output.
+- 1 to include, 0 to exclude
+
+Let's see both of them separately:
+
+$project eg:
+
+db.zips.aggregate([
+    {
+        $project: {
+            state:1,                    
+            zip:1,                       
+            population:"pop",             <-- show 'pop' field as population
+            _id:0                         <-- don't include this
+        }
+    }
+])
+
+
+Output:
+
+[
+    { zip:"34323", state: "AL", population: 2342 },
+    { zip:"34322", state: "AL", population: 3423 },
+    { zip:"45354", state: "AL", population: 45453 },
+    { zip:"42434", state: "AL", population: 65344 },
+]
+
+
+$set:
+- Adds or modifies field in the pipeline
+- Useful when we want to change the existing field in the pipeline
+- or, add new ones to be used in the upcoming pipeline stages.
+
+eg:
+
+db.zips.aggregate([
+    {
+        $set: {
+            pop_2022: { $round: { $multiply: [1.0031, "$pop"] } }
+        }
+    }
+])
+
+this creates a new field pop_2022 
+
+
+$count: 
+- count documents in the pipeline
+- Returns total document count
+
+eg:
+
+db.zips.aggregate([
+    { $count: "total_zips" }
+])
+
+output:
+{ total_zips: "232432" }
+
+
+
+Lesson 5: Using the $out stage:
+
+$out:
+- writes the document that are returned by an aggregation pipeline into a collection
+- Must be a last stage
+- Creates a new collection if it does not exist (!!IMPORTANT)
+- If collection exists, $out replaces the existing collection with the new data
+
+eg:
+
+db.zips.aggregate([
+    {
+        $group: {
+            _id: "$state",
+            total_pop: { $sum: "pop" }
+        }
+    },
+    {
+        $match: {
+            total_pop: { $lt: 100000 }
+        }
+    },
+    {
+        $out: "small_states"
+    }
+])
+
+- To confirm this, type 'show collections'
+
+
+This lesson is finished, for more aggregation stages, check out the documentation.
+
+
+
+
+----------------------------------------
+
+
+
+CHAPTER X: DATA MODELLING:
+
+Lesson 1: Introduction:
+
+Schema: organisation of data inside database is called Schema.
+
+Instead of thinking about Database, we should start thinking about our application instead
+
+ask questinos such as:
+- What does my application do?
+- What data will I store?
+- How will users access this data?
+- What data will be most valuable to me?
+
+Asking these questions will:
+- help describe our task as well as task of the users.
+- What our data looks like?
+- The relationships among the data
+- The tooling we plan to have
+- The access patterns that might emerge
+
+A good data model can:
+- Make it easier to manage data.
+- Make queries more efficient.
+- Use less memory and CPU
+- Reduce Costs
+
+PTR:
+- Data that is accessed together should be stored together.
+- Documents in MongoDB database is flexible
+- i.e we can have different number of documents in DB (polymorphism)
+- This doesn't mean 'schema less' but 'schema flexible'
+- We can make nested documents too (embedded document model)
+- This helps us to build complex relationships among data.
+
+The process of a data modelling exercise is to understand our data.
+So that it can be 
+- stored, 
+- queried 
+- use resource significantly
+
+Once we've considered our users and how the application will use our data, 
+It's time to begin modelling relationships
+
+
+Lesson 2: Types of data relationships
+
+- Three types of modelling:
+1. One-to-one
+2. one-to-many
+3. many-to-many
+
+- Modelling these relationships are easy in MongoDB
+
+Two primary ways of modelling data relationships in MongoDB:
+- Embedding
+- Referencing
+
+
+Lesson 3: Embedding
+
+
+Embedding documents means 'nesting' documents.
+This means nesting documents inside document
+
+Used when we've one to many or many to many relationship in the data that's being stored.
+
+MongoDB recommends embeddinig documents:
+- to simply queries.
+- Improve overall query performance
+
+eg: 
+{
+    name: {firstname: "Rishi", lastname: "Raj"},    
+    job: "professor",
+    address: 
+        {
+            {....},
+            {....},         
+            {....}
+        }
+}
+
+two fields here are embedded i.e name and address
+
+PROS:
+- Avoid application joins.
+- Provide better performance for read operations.
+- Ideal for one-to-many and many-to-many relationship among data.
+- Allows developers to update related data in a single write operation.
+
+CONS:
+- embedding data into a single document can create large documents.
+- large documents have to be 'read into memory in full'
+- This can result in slow application performance for your end user.
+
+WARNING:
+- Continuously adding data without limit creates unbounded documents.
+- Unbounded documents may exceed the BSON document threshold of 16 MB.
+- Large documents / Unbounded documents are 'Schema Anti-Patterns' (see documentation)
+
+
+Lesson 4: Referencing data in documents: 
+
+- Data that is accessed together should be stored together.
+i.e we're storing related data into a single document
+
+However, there are times where we want to store related data into a separate document or even separate collections.
+
+- Using references is called 'linking' or 'data normalization'
+- references save the _id field of one document in another document as a link between the two.
+- Simple and sufficient for most use cases
+- However querying from multiple documents costs extra resources and impacts read performances.
+
+
+Verdict:
+
+Embedding:
+
+PROS: 
+- Single query to retrieve data.
+- Single operation to update/delete data
+
+CONS:
+- Data duplication
+- Large components
+
+
+Referencing:
+
+PROS:
+- No duplication
+- Smaller Documents
+
+CONS:
+- Need to join data from multiple documents.
+
+
+Lesson 5: Scaling a data model
+
+At the end, we want to create a model that scales well the has optimum efficiency
+
+Optimum efficiency of what?
+- Query result times
+- Memory Usage
+- CPU Usage
+- Storage
+
+- While creating a model, we wan't to avoid creating a document that are 'unbounded'
+i.e the document that grow infinately.
+
+This happens when we use 'embedding'
+
+scenario:
+
+if comment array of the blogpost collection are in thousands
+
+As the array grows larger, problems start arising
+
+- It will take up more space in memory.
+- May impact write performance.
+- Difficult to perform pagination of comments.
+- Maximum document size of 16MB will lead to storage problems
+
+Solution?
+
+- Break up data into multiple 'collections' and use references to keep frequently accessed data together
+
+
+final words:
+
+Avoid:
+- More than the document size limit of 16MB.
+- Poor quality performance.
+- Poor write performance
+- Too much memory being used.
+
+Effective data modelling will prevent all these things.
+
+
+Lesson 6: Using Atlas tools for Schema help
+
+Atlas provides tools to help developers plan, organize and model data.
+
+Schema Anti-Patterns can cause:
+- sub optimal performance
+- non-scalable solutions
+
+Common Schema Anti-patterns:
+
+- Massive arrays
+- Massive number of collections
+- Bloated documents
+- unnecessary indexes
+- queries without indexes
+- data that's accessed together, but stored in different collection
+
+Tools that MongoDB Atlas provide that's useful in minimizing these anti-patterns like:
+- Data Explorer
+- Performance Advisor
+
+To use it, go the MongoDB Atlas 'browse collections' 
+
+
+
+CHAPTER Y: MongoDB Transaction:
+
+Lesson 1: ACID Transaction:
+
+Scenario: 
+- If we send money from mobile payment app to another person
+  We've to make sure that the transfer of value is reliable.
+
+- Track inventory in online shopping.
+- Billing software that tracks payment
+
+
+ACID transactions are tools that developers use to solve this problem
+It's a group of database operation that will be completed as a unit or completely fail.
+
+ACID describes property that all transactions have:
+
+- Atomicity
+- Consistency
+- Isolation
+- Durability
+
+ACID:
+
+- Atomicity -> all operation either succeed of fail altogether.
+
+- Consistency -> All changes made by operation are consistent with database operation
+
+eg: 
+If an account can't fall below 0 in a database, A transaction will fail if it contains an operation that violates this constrains.
+
+- Isolation -> Multiple transaction can happen at the same time without affecting the outcome of the other transaction.
+
+- Durability -> All changes that are made by operations in a transaction will persist, no matter what
+
+
+Lesson 2: ACID Transaction in MongoDB:
+
+Types of ACID transactions:
+1. Single document ACID transaction.
+2. Multi document ACID transaction.
+
+
+ACID Transactions are always atomic 
+i.e a group of database operations that will be completed as a unit or not at all.
+
+Single document operations are already atomic in MongoDB
+
+Multi-document operations are not inherently atomic, require extra steps to have ACID properties.
+
+
+Multi-document ACID transactions:
+- Must be used when we've in depth knowledge about our application's requirement.
+- Incurs performance cost and affects latency
+- Use multi document transactions as a precise tool
+
+
+THINGS TO REMEMBER:
+
+- All single document operations are atomic.
+- No extra steps are needed to provide ACID properties to single document operation.
+- If we need multi-document operations to have ACID properties, we've to wrap them inside a multi document transaction.
+- Multi document ACID transactions should be used as a precise tool.
+
